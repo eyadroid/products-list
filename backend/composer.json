@@ -1,0 +1,14 @@
+{
+    "require": {
+        "php": "^7.0",
+        "vlucas/phpdotenv": "^5.2",
+        "guzzlehttp/guzzle": "^7.2",
+        "rakit/validation": "^1.4",
+        "altorouter/altorouter": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "Controllers\\":"./controllers/"
+        }
+    }
+}
