@@ -2,13 +2,24 @@
     "require": {
         "php": "^7.0",
         "vlucas/phpdotenv": "^5.2",
-        "guzzlehttp/guzzle": "^7.2",
         "rakit/validation": "^1.4",
-        "altorouter/altorouter": "^2.0"
+        "altorouter/altorouter": "^2.0",
+        "doctrine/orm": "2.4.8"
     },
     "autoload": {
         "psr-4": {
           "Controllers\\":"./controllers/"
         }
+    },
+    "scripts": {
+        "start" : [
+            "php -S localhost:3300 -t public"
+        ],
+        "beautify": [
+            "php vendor/bin/phpcbf ./config ./controllers ./public"
+        ]
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7"
     }
 }
