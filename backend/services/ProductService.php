@@ -57,6 +57,16 @@ class ProductService
         return $products;
     }
 
+    public function deleteProducts($ids)
+    {
+        $this->em->createQueryBuilder()
+            ->delete(Product::class, 'p')
+            ->where('p.id in (:ids)')
+            ->setParameter('ids', $ids, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
+            ->getQuery()
+            ->execute();
+    }
+
     private function setBookExtraData($book)
     {
         $weight = $_POST['weight'];

@@ -88,6 +88,28 @@ class ProductController
 
     public function bulkDelete()
     {
-        // TODO: bulk delete
+        $validator = new Validator;
+        $validation = $validator->make(
+            $_GET, [
+            'ids' => 'array',
+            'ids.*' => 'required|numeric',
+            ]
+        );
+
+        if ($validation->fails()) {
+            http_response_code(422);
+            $errors = $validation->errors();
+            return [
+                "success" => false,
+                "errors" => $errors->toArray()
+            ];
+        }
+
+        $this->productService->deleteProducts($_GET['ids']);
+
+        return [
+            "success" => true,
+            "message" => "Products deleted successfully."
+        ];
     }
 }
