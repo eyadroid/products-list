@@ -1,12 +1,6 @@
 <?php 
 
 /**
- * Include the controllers here
- */
-require_once __DIR__.'/../controllers/ProductController.php';
-
-
-/**
  * Initialize the router insance
  */
 $router = new AltoRouter();
@@ -19,6 +13,7 @@ $router->setBasePath('/api');
  * Map the routes with controller methods here
  */
 $router->map('GET', '/products', '\Controllers\ProductController@index');
+$router->map('POST', '/products', '\Controllers\ProductController@store');
 /**
  * Match the route and return appropriate response
  */
