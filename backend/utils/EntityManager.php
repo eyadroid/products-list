@@ -19,7 +19,7 @@ class EntityManager
      */
     public static function getInstance()
     {
-        if(self::$_instance === NULL) {
+        if(self::$_instance === null) {
             $isDevMode = $_ENV['APP_ENV'] === 'local';
             $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/../entities"), $isDevMode);
 
@@ -58,7 +58,9 @@ class EntityManager
     /**
      * Singletons may not be cloned
      */
-    private function __clone() {}
+    private function __clone()
+    {
+    }
 
     /**
      * Delegate every method call to PDO instance
@@ -67,7 +69,8 @@ class EntityManager
      * @param  Array  $args
      * @return Mixed
      */    
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         return call_user_func_array(array($this->_instance, $method), $args);
     }
 }

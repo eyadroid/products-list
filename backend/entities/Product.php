@@ -7,29 +7,29 @@ namespace Entities;
  * @Table("products")
  * @InheritanceType("SINGLE_TABLE")
  * @DiscriminatorColumn(name="productType", type="integer")
- * @DiscriminatorMap({1 = "Book", 2 = "DVD", 3 = "Furniture"})
+ * @DiscriminatorMap({1                     = "Book", 2 = "DVD", 3 = "Furniture"})
  */
 
 class Product
 {
     /**
-     * @Id @GeneratedValue @Column(type="integer")
+     * @Id  @GeneratedValue @Column(type="integer")
      * @var int
      */
     protected $id;
     /**
      * @Column(type="string")
-     * @var string
+     * @var                   string
      */
     protected $name;
     /**
      * @Column(type="decimal", precision=13, scale=2)
-     * @var float
+     * @var                    float
      */
     protected $price;
     /**
      * @Column(type="string", unique=true)
-     * @var int
+     * @var                   int
      */
     protected $sku;
 
@@ -63,7 +63,8 @@ class Product
         return self::PRODUCT_TYPES[$this->type];
     }
 
-    public function setBasicData($name, $price, $sku) {
+    public function setBasicData($name, $price, $sku)
+    {
         $this->name = $name;
         $this->price = $price;
         $this->sku = $sku;

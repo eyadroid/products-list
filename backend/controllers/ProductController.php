@@ -15,7 +15,8 @@ class ProductController
      */
     private $productService;
 
-    function __construct() {
+    function __construct()
+    {
         $this->productService = new ProductService();
     }
 
@@ -24,16 +25,19 @@ class ProductController
         $this->productService->createProduct();
     }
 
-    public function get() {
+    public function get()
+    {
         // TODO: get single product
     }
 
-    public function store() {
+    public function store()
+    {
         $validator = new Validator;
         $types = array_values(Product::PRODUCT_TYPES);
 
         $validator->addValidator('unique', new UniqueRule());
-        $validation = $validator->validate($_POST, [
+        $validation = $validator->validate(
+            $_POST, [
             'sku' => 'required|unique:'.Product::class.',sku',
             'name' => 'required',
             'price' => 'required|numeric',
@@ -43,7 +47,8 @@ class ProductController
             'height' => 'required_if:type,furniture|numeric',
             'width' => 'required_if:type,furniture|numeric',
             'length' => 'required_if:type,furniture|numeric',
-        ]);
+            ]
+        );
 
         if ($validation->fails()) {
             http_response_code(422);
@@ -69,7 +74,8 @@ class ProductController
         ];
     }
 
-    public function bulkDelete() {
+    public function bulkDelete()
+    {
         // TODO: bulk delete
     }
 }

@@ -8,14 +8,16 @@ use Entities\DVD;
 use Entities\Furniture;
 use Utils\EntityManager;
 
-class ProductService {
+class ProductService
+{
     const TYPE_TO_CLASS = [
         'book' => Book::class,
         'dvd' => DVD::class,
         'furniture' => Furniture::class,
     ];
 
-    public function createProduct() {
+    public function createProduct()
+    {
         $type = $_POST['type'];
         $class = $this->getClassFromType($type);
         $instance = $this->createProductInstance($class);
@@ -35,19 +37,22 @@ class ProductService {
         }
     }
 
-    private function setBookExtraData($book) {
+    private function setBookExtraData($book)
+    {
         $weight = $_POST['weight'];
         $book->setWeight($weight);
         return $book;
     }
 
-    private function setDVDExtraData($dvd) {
+    private function setDVDExtraData($dvd)
+    {
         $size = $_POST['size'];
         $dvd->setSize($size);
         return $dvd;
     }
 
-    private function setFurnitureExtraData($furniture) {
+    private function setFurnitureExtraData($furniture)
+    {
         $height = $_POST['height'];
         $length = $_POST['length'];
         $width = $_POST['width'];
@@ -55,7 +60,8 @@ class ProductService {
         return $furniture;
     }
 
-    private function createProductInstance($class) {
+    private function createProductInstance($class)
+    {
         $instance = new $class;
         $name = $_POST['name'];
         $price = $_POST['price'];
@@ -64,11 +70,13 @@ class ProductService {
         return $instance;
     }
 
-    private function getClassFromType($type) {
+    private function getClassFromType($type)
+    {
         return self::TYPE_TO_CLASS[$type];
     }
 
-    private function getSetExtraDataMethodFromType($type) {
+    private function getSetExtraDataMethodFromType($type)
+    {
         return "set".ucwords($type)."ExtraData";
     }
 }
