@@ -21,7 +21,7 @@
             "php -S localhost:3300 -t public"
         ],
         "beautify": [
-            "php vendor/bin/phpcbf ./config ./controllers ./public"
+            "php vendor/bin/phpcbf ./config ./entities ./controllers ./public ./rules ./services ./utils"
         ]
     },
     "require-dev": {
