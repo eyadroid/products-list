@@ -23,8 +23,16 @@ class ProductService {
         $instance = $this->$extraDataMethod($instance);
 
         $entityManager = EntityManager::getInstance();
-        $entityManager->persist($instance);
-        $entityManager->flush();
+        $entityManager->getConnection()->beginTransaction(); // suspend auto-commit
+        try {
+            $entityManager->persist($instance);
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
+            return true;
+        } catch (Exception $e) {
+            $entityManager->getConnection()->rollback();
+            return false;
+        }
     }
 
     private function setBookExtraData($book) {

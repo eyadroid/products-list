@@ -12,7 +12,8 @@
           "Controllers\\":"./controllers/",
           "Entities\\":"./entities/",
           "Utils\\":"./utils/",
-          "Services\\":"./services"
+          "Services\\":"./services",
+          "Rules\\": "./rules"
         }
     },
     "scripts": {
