@@ -22,4 +22,13 @@ class Book extends Product
     {
         $this->weight = $weight;
     }
+
+    public function toArray()
+    {
+        return array_merge(
+            parent::toArray(), [
+            "weight" => $this->getWeight(),
+            ]
+        );
+    }
 }

@@ -13,6 +13,7 @@ $router->setBasePath('/api');
  * Map the routes with controller methods here
  */
 $router->map('GET', '/products', '\Controllers\ProductController@index');
+$router->map('GET', '/products/[i:sku]', '\Controllers\ProductController@show');
 $router->map('POST', '/products', '\Controllers\ProductController@store');
 /**
  * Match the route and return appropriate response

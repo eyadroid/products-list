@@ -22,12 +22,24 @@ class ProductController
 
     public function index()
     {
-        $this->productService->createProduct();
+        $products = $this->productService->allProducts();
+
+        foreach ($products as $key => $product) {
+            $products[$key] = $product->toArray();
+        }
+
+        return $products;
     }
 
-    public function get()
+    public function show($sku)
     {
-        // TODO: get single product
+        $product = $this->productService->getProduct($sku);
+        if (!$product) {
+            http_response_code(404);
+            return "Product not found";
+        }
+
+        return $product->toArray();
     }
 
     public function store()

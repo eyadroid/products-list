@@ -10,6 +10,13 @@ use Utils\EntityManager;
 
 class ProductService
 {
+    private $em;
+
+    function __construct()
+    {
+        $this->em = EntityManager::getInstance();
+    }
+
     const TYPE_TO_CLASS = [
         'book' => Book::class,
         'dvd' => DVD::class,
@@ -24,17 +31,30 @@ class ProductService
         $extraDataMethod = $this->getSetExtraDataMethodFromType($type);
         $instance = $this->$extraDataMethod($instance);
 
-        $entityManager = EntityManager::getInstance();
-        $entityManager->getConnection()->beginTransaction(); // suspend auto-commit
+        $this->em->getConnection()->beginTransaction(); // suspend auto-commit
         try {
-            $entityManager->persist($instance);
-            $entityManager->flush();
-            $entityManager->getConnection()->commit();
+            $this->em->persist($instance);
+            $this->em->flush();
+            $this->em->getConnection()->commit();
             return true;
         } catch (Exception $e) {
-            $entityManager->getConnection()->rollback();
+            $this->em->getConnection()->rollback();
             return false;
         }
+    }
+
+    public function getProduct($sku)
+    {
+        $product = $this->em->getRepository(Product::class)
+            ->findOneBy(['sku' => $sku]);
+        return $product;
+    }
+
+    public function allProducts()
+    {
+        $products = $this->em->getRepository(Product::class)
+            ->findAll();
+        return $products;
     }
 
     private function setBookExtraData($book)

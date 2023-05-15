@@ -23,4 +23,13 @@ class DVD extends Product
     {
         $this->size = $size;
     }
+
+    public function toArray()
+    {
+        return array_merge(
+            parent::toArray(), [
+            "size" => $this->getSize(),
+            ]
+        );
+    }
 }

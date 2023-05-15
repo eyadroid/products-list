@@ -10,7 +10,7 @@ namespace Entities;
  * @DiscriminatorMap({1                     = "Book", 2 = "DVD", 3 = "Furniture"})
  */
 
-class Product
+abstract class Product
 {
     /**
      * @Id  @GeneratedValue @Column(type="integer")
@@ -58,9 +58,14 @@ class Product
         return $this->price;
     }
 
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
     public function getType()
     {
-        return self::PRODUCT_TYPES[$this->type];
+        return self::PRODUCT_TYPES[$this->productType];
     }
 
     public function setBasicData($name, $price, $sku)
@@ -68,5 +73,20 @@ class Product
         $this->name = $name;
         $this->price = $price;
         $this->sku = $sku;
+    }
+
+    public function toArray()
+    {
+        return [
+            "id" => $this->getId(),
+            "name" => $this->getName(),
+            "sku" => $this->getSku(),
+            "price" => $this->getPrice(),
+            "type" => $this->getType(),
+            "weight" => null,
+            "length" => null,
+            "width" => null,
+            "height" => null,
+        ];
     }
 }
