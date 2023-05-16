@@ -91,6 +91,8 @@ class ProductController
 
     public function bulkDelete()
     {
+        $_GET = json_decode(file_get_contents("php://input"), true);
+
         $validator = new Validator;
         $validation = $validator->make(
             $_GET, [
