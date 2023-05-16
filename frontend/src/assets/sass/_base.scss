@@ -43,3 +43,46 @@ main {
     }
   }
 }
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 20px;
+  column-gap: 20px;
+
+  @include respond-to('medium') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+
+    input, select {
+      padding: 10px;
+      border: 2px solid $black;
+      box-shadow: none;
+    }
+
+    &--error {
+      input, select {
+        border: 2px solid red;
+      }
+    }
+
+    &__description {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    &__errors {
+      padding: 0 20px;
+      margin-top: 10px;
+      &__error {
+        margin: 0;
+        color: red;
+        font-size: 12px;
+      }
+    }
+  }
+}

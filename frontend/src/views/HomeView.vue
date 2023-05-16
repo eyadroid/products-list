@@ -57,13 +57,13 @@ function isProductSelected(product) {
 </script>
 
 <template>
-  <AppHeader>
+  <AppHeader title="Product List">
     <template #action>
       <button @click="deleteProducts" class="header__content__button" v-if="showDeleteButton">
         MASS DELETE
       </button>
 
-      <router-link to="/" class="header__content__button" v-else>
+      <router-link :to="{'name': 'add'}" class="header__content__button" v-else>
         ADD
       </router-link>
     </template>
