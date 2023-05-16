@@ -58,7 +58,7 @@ class ProductService {
     }
 
     async deleteProducts(ids:number[]):Promise<boolean> {
-        const resp = await apiService.post(`/products`, {
+        const resp = await apiService.delete(`/products`, {
             ids
         });
 

@@ -2,7 +2,6 @@
 import { computed } from "@vue/runtime-core";
 import { ref, onMounted } from 'vue';
 import AppHeader from '@/components/AppHeader.vue';
-import { productService } from '@/services/productService';
 import BookBox from '@/components/BookBox.vue';
 import DVDBox from '@/components/DVDBox.vue';
 import FurnitureBox from '@/components/FurnitureBox.vue';
@@ -10,15 +9,18 @@ import { ProductComponent } from '@/types/ProductComponent';
 import Book from '@/models/Book';
 import DVD from '@/models/DVD';
 import Furniture from '@/models/Furniture';
-import Product from '@/models/Product';
+import {useProductsStore} from "@/stores/products";
 
 const selectedProducts = ref([]);
-const products = ref([]);
+
+const productsStore = useProductsStore();
+const { getProducts } = productsStore;
 
 onMounted( async () => {
-  products.value = await productService.getProducts();
-  console.log(products.value);
+  await getProducts();
 });
+
+const products = computed(() => productsStore.products)
 
 const PRODUCT_TYPE_TO_COMPONENT : Map<string, ProductComponent> = new Map([
   [Book.name, BookBox],
@@ -29,6 +31,11 @@ const PRODUCT_TYPE_TO_COMPONENT : Map<string, ProductComponent> = new Map([
 const showDeleteButton = computed(() => {
   return selectedProducts.value.length > 0;
 });
+
+async function deleteProducts() {
+  productsStore.deleteProducts(selectedProducts.value);
+  selectedProducts.value.splice(0);
+}
 
 function getComponentFromType (product:object):ProductComponent {
   return PRODUCT_TYPE_TO_COMPONENT.get(product.constructor.name)!;
@@ -52,7 +59,7 @@ function isProductSelected(product) {
 <template>
   <AppHeader>
     <template #action>
-      <button class="header__content__button" v-if="showDeleteButton">
+      <button @click="deleteProducts" class="header__content__button" v-if="showDeleteButton">
         MASS DELETE
       </button>
 
