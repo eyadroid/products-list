@@ -16,7 +16,7 @@ export class APIResponse {
     // only errors
     // success with message
     public success:boolean;
-    public data:object|null;
+    public data:any|null;
     public message:string|null;
     public errors:APIValidationError[];
 

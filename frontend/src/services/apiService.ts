@@ -4,9 +4,15 @@ import { AxiosAdapter } from "@/adapters/AxiosAdapter";
 import { AxiosResponse } from "node_modules/axios/index";
 
 class ApiService {
-    get(path:string, paramters:object = {}) : Promise<APIResponse> {
+    get(path:string, params:object = {}) : Promise<APIResponse> {
         return this.parseResponse(axios.get(path, {
-            paramters,
+            params,
+        }));
+    }
+    
+    delete(path:string, params:object = {}) : Promise<APIResponse> {
+        return this.parseResponse(axios.delete(path, {
+            data: params,
         }));
     }
 
@@ -30,10 +36,6 @@ class ApiService {
             }
         })
     }
-
-    // private parseAxiosResponse(AxiosResponse) {
-
-    // }
 }
 
 export const apiService: ApiService = new ApiService();
