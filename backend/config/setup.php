@@ -12,8 +12,8 @@ $dotenv->load();
 if($_ENV['APP_ENV'] === 'local') {
     ini_set('display_errors', '1');
     ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
-        // Allow from any origin
+    error_reporting(E_ERROR | E_PARSE);
+    // Allow from any origin
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
         // you want to allow, and if so:
