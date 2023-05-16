@@ -5,15 +5,13 @@
  */
 $router = new AltoRouter();
 $router->setBasePath('/api');
-/**
- * Add regex for uuid version 4
- */
+
 
 /**
  * Map the routes with controller methods here
  */
+$router->map('GET', '/products/[a:sku]', '\Controllers\ProductController@show');
 $router->map('GET', '/products', '\Controllers\ProductController@index');
-$router->map('GET', '/products/[i:sku]', '\Controllers\ProductController@show');
 $router->map('POST', '/products', '\Controllers\ProductController@store');
 $router->map('DELETE', '/products', '\Controllers\ProductController@bulkDelete');
 /**
@@ -35,6 +33,7 @@ if(is_array($match) && is_callable($match['target']) ) {
 }
 
 if($response) {
+    header('Content-Type: application/json');
     echo json_encode($response); 
 }
 

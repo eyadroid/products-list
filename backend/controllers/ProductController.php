@@ -34,9 +34,12 @@ class ProductController
     public function show($sku)
     {
         $product = $this->productService->getProduct($sku);
+
         if (!$product) {
             http_response_code(404);
-            return "Product not found";
+            return [
+                "message" => "Product not found"
+            ];
         }
 
         return $product->toArray();
@@ -44,13 +47,15 @@ class ProductController
 
     public function store()
     {
+        $_POST = json_decode(file_get_contents("php://input"), true);
+
         $validator = new Validator;
         $types = array_values(Product::PRODUCT_TYPES);
 
         $validator->addValidator('unique', new UniqueRule());
         $validation = $validator->validate(
             $_POST, [
-            'sku' => 'required|unique:'.Product::class.',sku',
+            'sku' => ['required', 'regex:/^[0-9A-Za-z]++$/', 'unique:'.Product::class.',sku'],
             'name' => 'required',
             'price' => 'required|numeric',
             'type' => 'required|in:'.join(',', $types),
@@ -66,7 +71,6 @@ class ProductController
             http_response_code(422);
             $errors = $validation->errors();
             return [
-                "success" => false,
                 "errors" => $errors->toArray()
             ];
         }
@@ -74,14 +78,13 @@ class ProductController
         $done = $this->productService->createProduct();
 
         if (!$done) {
+            http_response_code(500);
             return [
-                "success" => false,
                 "message" => "Server error"
             ];
         }
 
         return [
-            "success" => true,
             "message" => "Product created succesfuly"
         ];
     }
@@ -100,7 +103,6 @@ class ProductController
             http_response_code(422);
             $errors = $validation->errors();
             return [
-                "success" => false,
                 "errors" => $errors->toArray()
             ];
         }
@@ -108,7 +110,6 @@ class ProductController
         $this->productService->deleteProducts($_GET['ids']);
 
         return [
-            "success" => true,
             "message" => "Products deleted successfully."
         ];
     }
