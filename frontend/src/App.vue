@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import {apiService} from './services/apiService';
+
+// console.log(await apiService.get('/products/test574062'));
+// console.log(await apiService.post('/products', {
+//   sku: "@411",
+//   name: "Test",
+//   price: 500,
+//   type: "dvd",
+//   size: "225"
+// }));
 </script>
 
 <template>
