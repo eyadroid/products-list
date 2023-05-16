@@ -2,7 +2,7 @@ import Product from "./Product";
 
 export default class Furniture extends Product {
     public readonly width:number;
-    public readonly height:number;
+    public readonly heigth:number;
     public readonly length:number;
 
     constructor(
@@ -10,7 +10,7 @@ export default class Furniture extends Product {
     ) {
         super(json);
         this.width = json['width'];
-        this.height = json['height'];
+        this.heigth = json['heigth'];
         this.length = json['length'];
     }
 }
