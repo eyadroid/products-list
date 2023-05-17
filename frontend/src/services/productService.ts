@@ -24,7 +24,9 @@ class ProductService {
     }
 
     async getProduct(sku:string):Promise<Product|null> {
-        const resp = await apiService.get(`/products/${sku}`);
+        const resp = await apiService.get(`/products/get`, {
+            sku
+        });
         if (resp.success == false) {
             return null;
         }
