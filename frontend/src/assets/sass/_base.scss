@@ -28,18 +28,36 @@ main {
         font-weight: bold;
         font-size: 20px;
     }
+    &__buttons {
+      display:flex;
+      column-gap: 10px;
+    }
     &__button {
         height: min-content;
-        color: $black;
         font-size: 15px;
-        $border: 1px solid $black;
-        $edge-border: 4px solid $black;
-        padding: 3px 5px;
-        background: white;
+        line-height: 20px;
+        font-weight: bold;
+        --color: rgb(120, 120, 120);
+        color: var(--color);
+        $border: 1px solid var(--color);
+        $edge-border: 4px solid var(--color);
         border: $border;
         border-bottom: $edge-border;
         border-left: $edge-border;
+        padding: 3px 5px;
+        background: white;
         text-decoration: none;
+        transition: 0.2s color;
+        cursor: pointer;
+
+        &:hover {
+          background: var(--color);
+          color: white;
+        }
+
+        &--primary {
+          --color: black;
+        }
     }
   }
 }
@@ -62,6 +80,19 @@ main {
       padding: 10px;
       border: 2px solid $black;
       box-shadow: none;
+    }
+
+    &__input {
+      &--unitable {
+        display: flex;
+        select {
+          flex: 1;
+          border-left: none;
+        }
+        input {
+          flex: 2;
+        }
+      }
     }
 
     &--error {

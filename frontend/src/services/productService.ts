@@ -2,11 +2,20 @@ import Book from "@/models/Book";
 import DVD from "@/models/DVD";
 import Furniture from "@/models/Furniture";
 import Product from "@/models/Product";
+import { APIValidationError } from "@/types/APIResponse";
 import ProductConstructor from "@/types/ProductConstructor";
 import { apiService } from "./apiService";
 
 export const typeToClassMap = new Map<String, ProductConstructor>([["book", Book],["dvd", DVD],["furniture", Furniture]]);
 
+export class ProductInsertionError extends Error {
+    constructor(msg:string, public errors: APIValidationError[]) {
+        super(msg);
+        
+        // Set the prototype explicitly.
+        Object.setPrototypeOf(this, ProductInsertionError.prototype);
+    }
+}
 class ProductService {
     async getProducts():Promise<Product[]> {
         const resp = await apiService.get("/products");
@@ -27,6 +36,7 @@ class ProductService {
         name:string,
         price:number,
         sku:string,
+        type:"book"|"dvd"|"furniture",
         weight:number|null = null,
         size:number|null = null,
         width:number|null = null,
@@ -36,6 +46,7 @@ class ProductService {
         const resp = await apiService.post(`/products`, {
             name,
             price,
+            type,
             sku,
             weight,
             size,
@@ -45,12 +56,7 @@ class ProductService {
         });
 
         if (resp.success == false) {
-            const error = new Error(resp.message ?? "Error occured");
-
-            Object.assign(error, {
-                errors: resp.errors
-            });
-
+            const error = new ProductInsertionError(resp.message ?? "Error occured", resp.errors ?? []);
             throw error;
         }
 

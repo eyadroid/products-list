@@ -48,7 +48,6 @@ function toggleProductSelection(product) {
   }
 
   selectedProducts.value.push(product.id);
-  console.log(selectedProducts);
 }
 
 function isProductSelected(product) {
@@ -59,11 +58,17 @@ function isProductSelected(product) {
 <template>
   <AppHeader title="Product List">
     <template #action>
-      <button @click="deleteProducts" class="header__content__button" v-if="showDeleteButton">
-        MASS DELETE
-      </button>
+      <div class="header__content__buttons" v-if="showDeleteButton">
+        <button @click="selectedProducts.splice(0)" class="header__content__button header__content__button">
+          DESELECT ALL
+        </button>
 
-      <router-link :to="{'name': 'add'}" class="header__content__button" v-else>
+        <button @click="deleteProducts" class="header__content__button header__content__button--primary">
+          MASS DELETE
+        </button>
+      </div>
+
+      <router-link :to="{'name': 'add'}" class="header__content__button header__content__button--primary" v-else>
         ADD
       </router-link>
     </template>

@@ -8,6 +8,9 @@ import BookInputs from '@/components/BookInputs.vue';
 import DVDInputs from '@/components/DVDInputs.vue';
 import FurnitureInputs from '@/components/FurnitureInputs.vue';
 import { ProductInputsComponent } from '@/types/ProductInputsComponent';
+import { productService, ProductInsertionError } from '@/services/productService';
+import { APIValidationError } from '@/types/APIResponse';
+import router from '@/router';
 
 const PRODUCT_TYPE_TO_INPUTS_COMPONENT : Map<string, ProductInputsComponent> = new Map([
   ["book", BookInputs],
@@ -15,6 +18,7 @@ const PRODUCT_TYPE_TO_INPUTS_COMPONENT : Map<string, ProductInputsComponent> = n
   ["furniture", FurnitureInputs],
 ]);
 
+const submitEl = ref<HTMLInputElement>(null);
 const submited = ref(false);
 const errors = ref(new Map());
 const additionalInfo = {
@@ -60,9 +64,45 @@ async function validate() {
       }
 }
 
-function submit() {
+async function submit() {
     submited.value = true;
-    validate();
+    await validate();
+    if (errors.value.size > 0) return;
+    saveProduct();
+}
+
+async function saveProduct() {
+    const {
+        name,
+        price,
+        sku,
+        type,
+        weight,
+        size,
+        width,
+        height,
+        length,
+    } = form.value;
+    try {
+        await productService.insertProduct(
+            name,
+            price,
+            sku,
+            type,
+            weight,
+            size,
+            width,
+            height,
+            length,
+        );
+        router.push({'name': 'home'});
+    } catch(e:any) {
+        const error = e as ProductInsertionError;
+
+        for (const e of error.errors) {
+            errors.value.set(e.key, e.errors);
+        }
+    }
 }
 
 const inputs = computed(() => {
@@ -81,20 +121,20 @@ watch(() => ({...form.value}), (n, o) => {
 <template>
     <AppHeader title="Product Add">
         <template #action>
-            <div>
+            <div class="header__content__buttons">
                 <router-link :to="{'name': 'home'}" class="header__content__button">
                     Cancel
                 </router-link>
-                <button @click="submit" class="header__content__button">
+                <button @click="submitEl.click()" class="header__content__button header__content__button--primary">
                     Save
                 </button>
             </div>
         </template>
     </AppHeader>
     <main>
-        <form class="form">
+        <form class="form" @submit.prevent="submit">
             <FormField label="SKU" id="sku" :errors="errors.get('sku')">
-                <input v-model="form.sku" required class="form__field__input" id="sku" type="text" placeholder="Enter SKU..." />
+                <input name="sku" v-model="form.sku" required class="form__field__input" id="sku" type="text" placeholder="Enter SKU..." />
             </FormField>
 
             <FormField label="Name" id="sku" :errors="errors.get('name')">
@@ -115,6 +155,8 @@ watch(() => ({...form.value}), (n, o) => {
             </FormField>
 
             <component v-if="inputs" :is="inputs" :form="form" :errors="errors" />
+
+            <input type="submit" style="display:none;" ref="submitEl">
         </form>
     </main>
 </template>
