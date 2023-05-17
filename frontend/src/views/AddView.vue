@@ -10,12 +10,15 @@ import FurnitureInputs from '@/components/FurnitureInputs.vue';
 import { ProductInputsComponent } from '@/types/ProductInputsComponent';
 import { productService, ProductInsertionError } from '@/services/productService';
 import router from '@/router';
+import { useProductsStore } from '@/stores/products';
 
 const PRODUCT_TYPE_TO_INPUTS_COMPONENT : Map<string, ProductInputsComponent> = new Map([
   ["book", BookInputs],
   ["dvd", DVDInputs],
   ["furniture", FurnitureInputs],
 ]);
+
+const { insertProduct } = useProductsStore();
 
 const uniqueSKU = ref(false);
 const checkingUniqueSKU = ref(false);
@@ -52,13 +55,13 @@ async function validate() {
     }, {
         sku: 'required|regex:/^[0-9A-Za-z]+$/|unique',
         name: 'required',
-        price: 'required|numeric',
+        price: 'required|numeric|min:0|not_in:0',
         type: 'required|in:book,dvd,furniture',
-        weight: 'required_if:type,book|numeric',
+        weight: 'required_if:type,book|numeric|min:0|not_in:0',
         size: 'required_if:type,dvd',
-        height: 'required_if:type,furniture|numeric',
-        width: 'required_if:type,furniture|numeric',
-        length: 'required_if:type,furniture|numeric',
+        height: 'required_if:type,furniture|numeric|min:0|not_in:0',
+        width: 'required_if:type,furniture|numeric|min:0|not_in:0',
+        length: 'required_if:type,furniture|numeric|min:0|not_in:0',
     });
 
     errors.value.clear();
@@ -92,7 +95,7 @@ async function saveProduct() {
         length,
     } = form.value;
     try {
-        await productService.insertProduct(
+        await insertProduct(
             name,
             price,
             sku,
@@ -105,6 +108,7 @@ async function saveProduct() {
         );
         router.push({'name': 'home'});
     } catch(e:any) {
+        console.log(e);
         const error = e as ProductInsertionError;
 
         for (const e of error.errors) {
@@ -170,7 +174,7 @@ watch(() => ({...form.value}), (n, o) => {
             </FormField>
 
             <FormField label="Price" id="sku" :errors="errors.get('price')">
-                <input v-model="form.price" required class="form__field__input" id="price" type="number" placeholder="Enter Price..." />
+                <input v-model="form.price" required class="form__field__input" id="price" type="number" step="0.01" placeholder="Enter Price..." />
             </FormField>
 
             <FormField label="Type" id="sku" :errors="errors.get('type')">

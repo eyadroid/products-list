@@ -28,7 +28,7 @@ export class AxiosAdapter {
         const {status, data} = this.response;
 
         if (status == 200) {
-            return new APIResponse(true, data.message, data.message ? null : data);
+            return new APIResponse(true, data.message, data.message ? data.data : data);
         }
 
         else if (status == 422) {

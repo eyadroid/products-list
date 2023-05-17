@@ -74,8 +74,19 @@ function isProductSelected(product) {
     </template>
   </AppHeader>
   <main>
-    <div class="product-list">
+    <TransitionGroup name="products" tag="div" class="product-list">
       <component :selected="isProductSelected(product)" @select="toggleProductSelection(product)" v-for="product of products" :key="product.id" :is="getComponentFromType(product)" :product="product" />
-    </div>
+    </TransitionGroup>
   </main>
 </template>
+
+<style>
+.products-enter-active,
+.products-leave-active {
+  transition: all 0.5s ease;
+}
+.products-leave-to {
+  opacity: 0;
+  transform: scale(0) rotate(360deg);
+}
+</style>

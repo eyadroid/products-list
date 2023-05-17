@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <ProductBox :product="product">
     <template #more-info>
-      <p class="product-box__content__info">{{ product.weight }} KG</p>
+      <p class="product-box__content__info">{{ $getWeight(product.weight) }}</p>
     </template>
   </ProductBox>
 </template>

@@ -9,7 +9,7 @@ import axios from './axiosInstance'
 import App from './App.vue'
 import router from './router'
 
-import {getSize} from './utils/utils'
+import {getSize, getWeight} from './utils/utils'
 
 const app = createApp(App)
 
@@ -19,7 +19,8 @@ app.use(VueAxios, axios)
 app.directive('debounce', vue3Debounce({ lock: true }))
 app.mixin({
     methods: {
-        $getSize: getSize
+        $getSize: getSize,
+        $getWeight: getWeight,
     }
 })
 

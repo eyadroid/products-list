@@ -42,7 +42,7 @@ class ProductService {
         width:number|null = null,
         height:number|null = null,
         length:number|null = null,
-    ):Promise<boolean> {
+    ):Promise<any> {
         const resp = await apiService.post(`/products`, {
             name,
             price,
@@ -60,7 +60,7 @@ class ProductService {
             throw error;
         }
 
-        return true;
+        return resp.data;
     }
 
     async deleteProducts(ids:number[]):Promise<boolean> {
@@ -74,7 +74,7 @@ class ProductService {
         return true;
     }
 
-    private constructorFromType(type:string): ProductConstructor {
+    constructorFromType(type:string): ProductConstructor {
         return typeToClassMap.get(type)!;
     }
 
