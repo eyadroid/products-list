@@ -32,8 +32,8 @@ if(is_array($match) && is_callable($match['target']) ) {
     header($_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
 }
 
-if($response) {
-    header('Content-Type: application/json');
+if(isset($response)) {
+    header('Content-Type: application/json'); 
     echo json_encode($response); 
 }
 
