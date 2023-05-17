@@ -23,10 +23,10 @@ class ProductService {
         return json.map<Product>((j) => new (this.constructorFromType(j.type))(j))
     }
 
-    async getProduct(sku:string):Promise<Product> {
+    async getProduct(sku:string):Promise<Product|null> {
         const resp = await apiService.get(`/products/${sku}`);
         if (resp.success == false) {
-            throw resp.message ?? "Error";
+            return null;
         }
         const json = resp.data;
         return new (this.constructorFromType(json.type))(json);

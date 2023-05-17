@@ -17,6 +17,7 @@
     "validatorjs": "^3.22.1",
     "vue": "^3.3.2",
     "vue-axios": "^3.5.2",
+    "vue-debounce": "^4.0.0",
     "vue-router": "^4.2.0"
   },
   "devDependencies": {

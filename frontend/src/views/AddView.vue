@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { computed, watch } from "@vue/runtime-core";
 import * as Validator from "validatorjs";
 import AppHeader from '@/components/AppHeader.vue';
@@ -9,7 +9,6 @@ import DVDInputs from '@/components/DVDInputs.vue';
 import FurnitureInputs from '@/components/FurnitureInputs.vue';
 import { ProductInputsComponent } from '@/types/ProductInputsComponent';
 import { productService, ProductInsertionError } from '@/services/productService';
-import { APIValidationError } from '@/types/APIResponse';
 import router from '@/router';
 
 const PRODUCT_TYPE_TO_INPUTS_COMPONENT : Map<string, ProductInputsComponent> = new Map([
@@ -18,8 +17,11 @@ const PRODUCT_TYPE_TO_INPUTS_COMPONENT : Map<string, ProductInputsComponent> = n
   ["furniture", FurnitureInputs],
 ]);
 
+const uniqueSKU = ref(false);
+const checkingUniqueSKU = ref(false);
+const submitting = ref(false);
 const submitEl = ref<HTMLInputElement>(null);
-const submited = ref(false);
+const submitted = ref(false);
 const errors = ref(new Map());
 const additionalInfo = {
     size: null,
@@ -37,12 +39,18 @@ const form = ref({
     ...additionalInfo
 });
 
-async function validate() {
+onMounted(async () => {
     Validator.setMessages("en", await import(`validatorjs/src/lang/en`));
+    Validator.register("unique", (_, __, ___) => {
+        return uniqueSKU.value;
+    }, "This :attribute is already used.");
+})
+
+async function validate() {
     const validator = new Validator({
         ...form.value
     }, {
-        sku: 'required|regex:/^[0-9A-Za-z]+$/',
+        sku: 'required|regex:/^[0-9A-Za-z]+$/|unique',
         name: 'required',
         price: 'required|numeric',
         type: 'required|in:book,dvd,furniture',
@@ -65,7 +73,7 @@ async function validate() {
 }
 
 async function submit() {
-    submited.value = true;
+    submitted.value = true;
     await validate();
     if (errors.value.size > 0) return;
     saveProduct();
@@ -105,6 +113,21 @@ async function saveProduct() {
     }
 }
 
+async function checkUniqueSKU() {
+    checkingUniqueSKU.value = true;
+    try {
+        const product = await productService.getProduct(form.value.sku);
+        uniqueSKU.value = product == null;
+        if (submitted.value) {
+            validate();
+        }
+    } catch(e) {
+
+    } finally {
+        checkingUniqueSKU.value = false;
+    }
+}
+
 const inputs = computed(() => {
   return PRODUCT_TYPE_TO_INPUTS_COMPONENT.get(form.value.type);
 });
@@ -113,7 +136,12 @@ watch(() => ({...form.value}), (n, o) => {
     if (o.type != n.type) {
         Object.assign(form.value, additionalInfo);
     }
-    if (submited.value) {
+
+    if (o.sku != n.sku) {
+        checkUniqueSKU();
+    }
+
+    if (submitted.value) {
         validate();
     }
 })
@@ -125,7 +153,7 @@ watch(() => ({...form.value}), (n, o) => {
                 <router-link :to="{'name': 'home'}" class="header__content__button">
                     Cancel
                 </router-link>
-                <button @click="submitEl.click()" class="header__content__button header__content__button--primary">
+                <button :disabled="checkingUniqueSKU || submitting" @click="submitEl.click()" class="header__content__button header__content__button--primary">
                     Save
                 </button>
             </div>
@@ -133,8 +161,8 @@ watch(() => ({...form.value}), (n, o) => {
     </AppHeader>
     <main>
         <form class="form" @submit.prevent="submit">
-            <FormField label="SKU" id="sku" :errors="errors.get('sku')">
-                <input name="sku" v-model="form.sku" required class="form__field__input" id="sku" type="text" placeholder="Enter SKU..." />
+            <FormField label="SKU" id="sku" :errors="errors.get('sku')" :description="submitted && checkingUniqueSKU ? 'Checking...' : null">
+                <input name="sku" :value="form.sku" v-debounce:400ms="(val) => form.sku = val" required class="form__field__input" id="sku" type="text" placeholder="Enter SKU..." />
             </FormField>
 
             <FormField label="Name" id="sku" :errors="errors.get('name')">
