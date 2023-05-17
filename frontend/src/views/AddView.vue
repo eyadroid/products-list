@@ -164,21 +164,21 @@ watch(() => ({...form.value}), (n, o) => {
         </template>
     </AppHeader>
     <main>
-        <form class="form" @submit.prevent="submit">
+        <form class="form" @submit.prevent="submit" id="product_form">
             <FormField label="SKU" id="sku" :errors="errors.get('sku')" :description="submitted && checkingUniqueSKU ? 'Checking...' : null">
                 <input name="sku" :value="form.sku" v-debounce:400ms="(val) => form.sku = val" required class="form__field__input" id="sku" type="text" placeholder="Enter SKU..." />
             </FormField>
 
-            <FormField label="Name" id="sku" :errors="errors.get('name')">
+            <FormField label="Name" id="name" :errors="errors.get('name')">
                 <input v-model="form.name" required class="form__field__input" id="name" type="text" placeholder="Enter Name..." />
             </FormField>
 
-            <FormField label="Price" id="sku" :errors="errors.get('price')">
+            <FormField label="Price" id="price" :errors="errors.get('price')">
                 <input v-model="form.price" required class="form__field__input" id="price" type="number" step="0.01" placeholder="Enter Price..." />
             </FormField>
 
-            <FormField label="Type" id="sku" :errors="errors.get('type')">
-                <select v-model="form.type" required class="form__field__input" id="type">
+            <FormField label="Type" id="productType" :errors="errors.get('type')">
+                <select v-model="form.type" required class="form__field__input" id="productType">
                     <option :value="null">Select a type</option>
                     <option value="book">Book</option>
                     <option value="dvd">DVD</option>
