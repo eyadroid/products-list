@@ -36,10 +36,10 @@ class ProductService
             $this->em->persist($instance);
             $this->em->flush();
             $this->em->getConnection()->commit();
-            return true;
+            return $instance;
         } catch (Exception $e) {
             $this->em->getConnection()->rollback();
-            return false;
+            return null;
         }
     }
 
@@ -53,7 +53,7 @@ class ProductService
     public function allProducts()
     {
         $products = $this->em->getRepository(Product::class)
-            ->findAll();
+            ->findBy([], ['id' => 'DESC']);
         return $products;
     }
 

@@ -57,13 +57,13 @@ class ProductController
             $_POST, [
             'sku' => ['required', 'regex:/^[0-9A-Za-z]++$/', 'unique:'.Product::class.',sku'],
             'name' => 'required',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0|not_in:0',
             'type' => 'required|in:'.join(',', $types),
-            'weight' => 'required_if:type,book|numeric',
+            'weight' => 'required_if:type,book|numeric|min:0|not_in:0',
             'size' => 'required_if:type,dvd',
-            'height' => 'required_if:type,furniture|numeric',
-            'width' => 'required_if:type,furniture|numeric',
-            'length' => 'required_if:type,furniture|numeric',
+            'height' => 'required_if:type,furniture|numeric|min:0|not_in:0',
+            'width' => 'required_if:type,furniture|numeric|min:0|not_in:0',
+            'length' => 'required_if:type,furniture|numeric|min:0|not_in:0',
             ]
         );
 
@@ -75,9 +75,9 @@ class ProductController
             ];
         }
 
-        $done = $this->productService->createProduct();
+        $product = $this->productService->createProduct();
 
-        if (!$done) {
+        if (!$product) {
             http_response_code(500);
             return [
                 "message" => "Server error"
@@ -85,7 +85,8 @@ class ProductController
         }
 
         return [
-            "message" => "Product created succesfuly"
+            "message" => "Product created succesfuly",
+            "data" => $product->toArray()
         ];
     }
 
