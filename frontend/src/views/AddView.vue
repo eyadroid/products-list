@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { computed, watch } from "@vue/runtime-core";
-import * as Validator from "validatorjs";
+import Validator from "validatorjs";
 import AppHeader from '@/components/AppHeader.vue';
 import FormField from '@/components/FormField.vue';
 import BookInputs from '@/components/BookInputs.vue';
@@ -42,18 +42,11 @@ const form = ref({
     ...additionalInfo
 });
 
-onMounted(async () => {
-    Validator.setMessages("en", await import(`validatorjs/src/lang/en`));
-    Validator.register("unique", (_, __, ___) => {
-        return uniqueSKU.value;
-    }, "This :attribute is already used.");
-})
-
 async function validate() {
     const validator = new Validator({
         ...form.value
     }, {
-        sku: 'required|regex:/^[0-9A-Za-z]+$/|unique',
+        sku: 'required',
         name: 'required',
         price: 'required|numeric|min:0|not_in:0',
         type: 'required|in:book,dvd,furniture',
@@ -66,13 +59,17 @@ async function validate() {
 
     errors.value.clear();
 
-    if (validator.passes()) {
+    if (!validator.fails() && uniqueSKU.value) {
         return;
-      }
-      const errorsObject = validator.errors.all();
-      for (const key of Object.keys(errorsObject)) {
+    }
+
+    if (!uniqueSKU.value) {
+        errors.value.set("sku", ["This is SKU is already been used."]);
+    }
+    const errorsObject = validator.errors.all();
+    for (const key of Object.keys(errorsObject)) {
         errors.value.set(key, errorsObject[key]);
-      }
+    }
 }
 
 async function submit() {
@@ -108,7 +105,6 @@ async function saveProduct() {
         );
         router.push({'name': 'home'});
     } catch(e:any) {
-        console.log(e);
         const error = e as ProductInsertionError;
 
         for (const e of error.errors) {
@@ -165,8 +161,8 @@ watch(() => ({...form.value}), (n, o) => {
     </AppHeader>
     <main>
         <form class="form" @submit.prevent="submit" id="product_form">
-            <FormField label="SKU" id="sku" :errors="errors.get('sku')" :description="submitted && checkingUniqueSKU ? 'Checking...' : null">
-                <input name="sku" :value="form.sku" v-debounce:400ms="(val) => form.sku = val" required class="form__field__input" id="sku" type="text" placeholder="Enter SKU..." />
+            <FormField description="Only charcters and numbers are allowed" label="SKU" id="sku" :errors="errors.get('sku')" :description="submitted && checkingUniqueSKU ? 'Checking...' : null">
+                <input name="sku" pattern="[a-zA-Z0-9]*" :value="form.sku" v-debounce:400ms="(val) => form.sku = val" required class="form__field__input" id="sku" type="text" placeholder="Enter SKU..." />
             </FormField>
 
             <FormField label="Name" id="name" :errors="errors.get('name')">
