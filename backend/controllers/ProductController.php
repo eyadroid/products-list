@@ -31,14 +31,26 @@ class ProductController
         return $products;
     }
 
-    public function show($sku)
+    public function show()
     {
-        $product = $this->productService->getProduct($sku);
+        $validator = new Validator;
+        $validation = $validator->make(
+            $_GET, [
+                'sku' => ['required', 'regex:/^[0-9A-Za-z]++$/']
+            ]
+        );
+
+        if ($validation->fails()) {
+            http_response_code(404);
+            return;
+        }
+
+        $product = $this->productService->getProduct($_GET['sku']);
 
         if (!$product) {
             http_response_code(404);
             return [
-                "message" => "Product not found"
+                "message" => "Product not found."
             ];
         }
 
