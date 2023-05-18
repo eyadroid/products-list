@@ -10,6 +10,7 @@ import Book from '@/models/Book';
 import DVD from '@/models/DVD';
 import Furniture from '@/models/Furniture';
 import {useProductsStore} from "@/stores/products";
+import Product from "@/models/Product";
 
 const selectedProducts = ref([]);
 
@@ -38,11 +39,11 @@ async function deleteProducts() {
   selectedProducts.value.splice(0);
 }
 
-function getComponentFromType (product:object):ProductComponent {
+function getComponentFromType(product:object):ProductComponent {
   return PRODUCT_TYPE_TO_COMPONENT.get(product.constructor.name)!;
 }
 
-function toggleProductSelection(product) {
+function toggleProductSelection(product:Product) {
   if (isProductSelected(product)) {
     selectedProducts.value.splice(selectedProducts.value.indexOf(product.id), 1);
     return;
@@ -51,7 +52,7 @@ function toggleProductSelection(product) {
   selectedProducts.value.push(product.id);
 }
 
-function isProductSelected(product) {
+function isProductSelected(product:Product) {
   return selectedProducts.value.indexOf(product.id) > -1;
 }
 </script>

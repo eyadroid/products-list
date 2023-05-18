@@ -2,6 +2,9 @@
 import { ref } from 'vue';
 import { watch } from "@vue/runtime-core";
 
+// Allow selectable units and calculate model value with
+// the unit multiplayer.
+
 const props = defineProps<{
         units: Array<any>,
         modelValue: number,

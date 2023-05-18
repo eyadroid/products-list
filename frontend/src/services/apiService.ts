@@ -20,6 +20,7 @@ class ApiService {
         return this.parseResponse(axios.post(path, boday));
     }
 
+    // Transform axios response to APIResponse
     private parseResponse(respPromise:Promise<AxiosResponse>): Promise<APIResponse> {
         return new Promise<APIResponse>(async (resolve) => {
             try {

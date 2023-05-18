@@ -29,8 +29,9 @@ export const useProductsStore = defineStore('products', () => {
         height,
         length,
       ).then((product) => {
-        console.log(product);
         const newProduct = new (productService.constructorFromType(product.type))(product);
+        // if the product list is not empty insert the product
+        // to it's start
         if (products.value.length > 0) {
           products.value.unshift(newProduct);
         } else {
@@ -51,6 +52,7 @@ export const useProductsStore = defineStore('products', () => {
   }
   function deleteProducts(ids:number[]) {
     productService.deleteProducts(ids);
+    // remove product from the list
     ids.forEach((id) => products.value.splice(findProductIndexById(id), 1));
   }
 

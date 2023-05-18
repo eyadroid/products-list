@@ -6,6 +6,7 @@ import { APIValidationError } from "@/types/APIResponse";
 import ProductConstructor from "@/types/ProductConstructor";
 import { apiService } from "./apiService";
 
+// Map to transform product type to it's corresponding constructor
 export const typeToClassMap = new Map<String, ProductConstructor>([["book", Book],["dvd", DVD],["furniture", Furniture]]);
 
 export class ProductInsertionError extends Error {
@@ -20,6 +21,7 @@ class ProductService {
     async getProducts():Promise<Product[]> {
         const resp = await apiService.get("/products");
         const json = (resp.data as Array<any>);
+        // map json data to a product class by it's type
         return json.map<Product>((j) => new (this.constructorFromType(j.type))(j))
     }
 

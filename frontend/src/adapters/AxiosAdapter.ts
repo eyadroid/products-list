@@ -8,6 +8,7 @@ class APIErrorAdapter {
         this.errors = errors;
     }
 
+    // parse api errors to APIValidationError
     toValidationErrors() : APIValidationError[] {
         const errorsKeys = Object.keys(this.errors);
         const errorsArray: APIValidationError[] = errorsKeys.reduce<APIValidationError[]>((all, key) => [
@@ -27,10 +28,12 @@ export class AxiosAdapter {
     toAPIResponse(): APIResponse {
         const {status, data} = this.response;
 
+        // if success response
         if (status == 200) {
             return new APIResponse(true, data.message, data.message ? data.data : data);
         }
 
+        // if validation error response
         else if (status == 422) {
             const {errors} = this.response.data;
             if (errors) {
@@ -41,8 +44,4 @@ export class AxiosAdapter {
 
         return new APIResponse(false, data.message, null);
     }
-
-    // private parseErrorfromApiResponse(key:string, errors:): APIValidationError {
-    //     return new APIValidationError(error);
-    // }
 }
