@@ -46,7 +46,7 @@ class ProductController extends Controller
         $validation = $validator->make(
             $_GET,
             [
-                'sku' => ['required', 'regex:/^[0-9A-Za-z]++$/']
+                'sku' => ['required', 'regex:/^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$/']
             ]
         );
 
@@ -82,7 +82,7 @@ class ProductController extends Controller
         $validation = $validator->validate(
             $_POST,
             [
-            'sku' => ['required', 'regex:/^[0-9A-Za-z]++$/', 'unique:' . Product::class . ',sku'],
+            'sku' => ['required', 'regex:/^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$/', 'unique:' . Product::class . ',sku'],
             'name' => 'required',
             'price' => 'required|numeric|min:0|not_in:0',
             'type' => 'required|in:' . join(',', $types),
