@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entities;
 
 /**
@@ -21,7 +22,7 @@ class Furniture extends Product
      * @var                    int
      */
     protected $width;
-    
+
     protected $productType = Product::PRODUCT_TYPE_FURNITURE;
 
     public function setDimensions($heigth, $length, $width)
@@ -30,17 +31,17 @@ class Furniture extends Product
         $this->length = $length;
         $this->width = $width;
     }
-    
+
     public function getHeigth()
     {
         return $this->heigth;
     }
-    
+
     public function getLength()
     {
         return $this->length;
     }
-    
+
     public function getWidth()
     {
         return $this->width;
@@ -49,7 +50,8 @@ class Furniture extends Product
     public function toArray()
     {
         return array_merge(
-            parent::toArray(), [
+            parent::toArray(),
+            [
             "heigth" => $this->getHeigth(),
             "length" => $this->getLength(),
             "width" => $this->getWidth(),

@@ -33,11 +33,11 @@ abstract class Product
      */
     protected $sku;
 
-    const PRODUCT_TYPE_BOOK = 1;
-    const PRODUCT_TYPE_DVD = 2;
-    const PRODUCT_TYPE_FURNITURE = 3;
+    public const PRODUCT_TYPE_BOOK = 1;
+    public const PRODUCT_TYPE_DVD = 2;
+    public const PRODUCT_TYPE_FURNITURE = 3;
 
-    const PRODUCT_TYPES = [
+    public const PRODUCT_TYPES = [
         self::PRODUCT_TYPE_BOOK => "book",
         self::PRODUCT_TYPE_DVD => "dvd",
         self::PRODUCT_TYPE_FURNITURE => "furniture",

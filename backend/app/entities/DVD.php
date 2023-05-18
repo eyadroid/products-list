@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entities;
 
 /**
@@ -27,7 +28,8 @@ class DVD extends Product
     public function toArray()
     {
         return array_merge(
-            parent::toArray(), [
+            parent::toArray(),
+            [
             "size" => $this->getSize(),
             ]
         );

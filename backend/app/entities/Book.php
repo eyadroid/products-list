@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entities;
 
 /**
@@ -26,7 +27,8 @@ class Book extends Product
     public function toArray()
     {
         return array_merge(
-            parent::toArray(), [
+            parent::toArray(),
+            [
             "weight" => $this->getWeight(),
             ]
         );

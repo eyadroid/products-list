@@ -16,8 +16,11 @@
         "start" : [
             "php -S localhost:3300 -t public"
         ],
+        "lint": [
+            "php vendor/bin/phpcs --standard=PSR12 ./app ./public ./config"
+        ],
         "beautify": [
-            "php vendor/bin/phpcbf ./config ./entities ./controllers ./public ./rules ./services ./utils"
+            "php vendor/bin/phpcbf --standard=PSR12 ./app ./public ./config"
         ]
     },
     "require-dev": {

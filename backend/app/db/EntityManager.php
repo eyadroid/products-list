@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace App\DB;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
@@ -10,18 +10,18 @@ class EntityManager
     /**
      * @var DoctrineEntityManager
      */
-    protected static $_instance;
+    protected static $instance;
 
     /**
      * Creates instance and returns it on subsequent calls
-     * 
-     * @returns _instance
+     *
+     * @returns instance
      */
     public static function getInstance()
     {
-        if(self::$_instance === null) {
+        if (self::$instance === null) {
             $isDevMode = $_ENV['APP_ENV'] === 'local';
-            $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/../entities"), $isDevMode);
+            $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "/../entities"), $isDevMode);
 
             // database configuration parameters
             if ($_ENV['DATABASE_DRIVER'] == 'sqlite') {
@@ -39,15 +39,15 @@ class EntityManager
             }
 
             // call constructor with given options and assign instance
-            self::$_instance = DoctrineEntityManager::create($conn, $config);
+            self::$instance = DoctrineEntityManager::create($conn, $config);
         }
 
-        return self::$_instance;
+        return self::$instance;
     }
 
     /**
      * Creates new instance
-     * 
+     *
      * @return void
      */
     private function __construct()
@@ -64,13 +64,13 @@ class EntityManager
 
     /**
      * Delegate every method call to PDO instance
-     *  
+     *
      * @param  String $method
      * @param  Array  $args
      * @return Mixed
-     */    
+     */
     public function __call($method, $args)
     {
-        return call_user_func_array(array($this->_instance, $method), $args);
+        return call_user_func_array(array($this->instance, $method), $args);
     }
 }

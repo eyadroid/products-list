@@ -6,22 +6,22 @@ use App\Entities\Product;
 use App\Entities\Book;
 use App\Entities\DVD;
 use App\Entities\Furniture;
-use App\Utils\EntityManager;
+use App\DB\EntityManager;
 
 class ProductService
 {
     private $em;
 
-    function __construct()
-    {
-        $this->em = EntityManager::getInstance();
-    }
-
-    const TYPE_TO_CLASS = [
+    protected const TYPE_TO_CLASS = [
         'book' => Book::class,
         'dvd' => DVD::class,
         'furniture' => Furniture::class,
     ];
+
+    public function __construct()
+    {
+        $this->em = EntityManager::getInstance();
+    }
 
     public function createProduct()
     {
@@ -92,7 +92,7 @@ class ProductService
 
     private function createProductInstance($class)
     {
-        $instance = new $class;
+        $instance = new $class();
         $name = $_POST['name'];
         $price = $_POST['price'];
         $sku = $_POST['sku'];
@@ -107,6 +107,6 @@ class ProductService
 
     private function getSetExtraDataMethodFromType($type)
     {
-        return "set".ucwords($type)."ExtraData";
+        return "set" . ucwords($type) . "ExtraData";
     }
 }

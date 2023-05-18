@@ -8,4 +8,3 @@
 
     //Initialize the router
     require __DIR__ . '/../config/router.php';
-?>

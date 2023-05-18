@@ -3,7 +3,7 @@
 namespace App\Rules;
 
 use Rakit\Validation\Rule;
-use App\Utils\EntityManager;
+use App\DB\EntityManager;
 
 class UniqueRule extends Rule
 {
@@ -26,7 +26,7 @@ class UniqueRule extends Rule
         $entity = $this->parameter('entity');
         $except = $this->parameter('except');
 
-        if ($except AND $except == $value) {
+        if ($except and $except == $value) {
             return true;
         }
 
@@ -37,11 +37,11 @@ class UniqueRule extends Rule
         // do query
         $count = $repository->createQueryBuilder('e')
             ->select('COUNT(e)')
-            ->where('e.'.$column.' = :value')
+            ->where('e.' . $column . ' = :value')
             ->setParameter('value', $value);
 
         if (isset($except)) {
-            $count = $count->where('e.'.$column.' != :except')
+            $count = $count->where('e.' . $column . ' != :except')
                 ->setParameter('except', 'except');
         }
 
