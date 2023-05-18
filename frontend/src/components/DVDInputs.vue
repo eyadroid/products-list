@@ -3,10 +3,18 @@ import { ref } from 'vue'
 import FormField from '@/components/FormField.vue'
 import FormFieldUnitable from './FormFieldUnitable.vue'
 
-defineProps<{
-  form: object
+const props = defineProps<{
+  modelValue: any
   errors: object
 }>()
+
+const emit = defineEmits<{
+  'update:modelValue': number
+}>()
+
+function updateValue(key: string, value: any) {
+  emit('update:modelValue', { ...props.modelValue, [key]: value })
+}
 
 const sizes = ref([
   {
@@ -26,7 +34,12 @@ const sizes = ref([
 
 <template>
   <FormField description="Please provide size." label="Size" id="size" :errors="errors.get('size')">
-    <FormFieldUnitable v-model="form.size" v-slot="{ inputValue, inputChanged }" :units="sizes">
+    <FormFieldUnitable
+      :value="modelValue.size"
+      @update:modelValue="(val) => updateValue('size', val)"
+      v-slot="{ inputValue, inputChanged }"
+      :units="sizes"
+    >
       <input
         :value="inputValue"
         @change="($event) => inputChanged($event.target.value)"

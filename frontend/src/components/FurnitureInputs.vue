@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import FormField from '@/components/FormField.vue'
 
-defineProps<{
-  form: object
+const props = defineProps<{
+  modelValue: any
   errors: object
 }>()
+
+const emit = defineEmits<{
+  'update:modelValue': number
+}>()
+
+function updateValue(key: string, value: any) {
+  emit('update:modelValue', { ...props.modelValue, [key]: value })
+}
 </script>
 
 <template>
@@ -15,7 +23,8 @@ defineProps<{
     :errors="errors.get('width')"
   >
     <input
-      v-model="form.width"
+      :value="modelValue.width"
+      @change="updateValue('width', $event.target.value)"
       required
       class="form__field__input"
       id="width"
@@ -32,7 +41,8 @@ defineProps<{
     :errors="errors.get('length')"
   >
     <input
-      v-model="form.length"
+      :value="modelValue.length"
+      @change="updateValue('length', $event.target.value)"
       required
       class="form__field__input"
       id="length"
@@ -49,7 +59,8 @@ defineProps<{
     :errors="errors.get('height')"
   >
     <input
-      v-model="form.height"
+      :value="modelValue.height"
+      @change="updateValue('height', $event.target.value)"
       required
       class="form__field__input"
       id="height"

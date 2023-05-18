@@ -201,7 +201,7 @@ watch(
         </select>
       </FormField>
 
-      <component v-if="inputs" :is="inputs" :form="form" :errors="errors" />
+      <component v-if="inputs" :is="inputs" v-model="form" :errors="errors" />
 
       <input type="submit" style="display: none" ref="submitEl" />
     </form>

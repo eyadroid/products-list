@@ -3,10 +3,18 @@ import { ref } from 'vue'
 import FormField from '@/components/FormField.vue'
 import FormFieldUnitable from './FormFieldUnitable.vue'
 
-defineProps<{
-  form: object
+const props = defineProps<{
+  modelValue: any
   errors: object
 }>()
+
+const emit = defineEmits<{
+  'update:modelValue': number
+}>()
+
+function updateValue(key: string, value: any) {
+  emit('update:modelValue', { ...props.modelValue, [key]: value })
+}
 
 const units = ref([
   {
@@ -27,7 +35,12 @@ const units = ref([
     id="weight"
     :errors="errors.get('weight')"
   >
-    <FormFieldUnitable v-model="form.weight" v-slot="{ inputValue, inputChanged }" :units="units">
+    <FormFieldUnitable
+      :value="modelValue.weight"
+      @update:modelValue="(val) => updateValue('weight', val)"
+      v-slot="{ inputValue, inputChanged }"
+      :units="units"
+    >
       <input
         :value="inputValue"
         @change="($event) => inputChanged($event.target.value)"
