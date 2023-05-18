@@ -153,7 +153,7 @@ watch(() => ({...form.value}), (n, o) => {
                 <router-link :to="{'name': 'home'}" class="header__content__button">
                     Cancel
                 </router-link>
-                <button :disabled="checkingUniqueSKU || submitting" @click="submitEl.click()" class="header__content__button header__content__button--primary">
+                <button type="button" :disabled="checkingUniqueSKU || submitting" @click="submitEl.click()" class="header__content__button header__content__button--primary">
                     Save
                 </button>
             </div>

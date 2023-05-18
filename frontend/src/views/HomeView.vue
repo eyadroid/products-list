@@ -28,11 +28,12 @@ const PRODUCT_TYPE_TO_COMPONENT : Map<string, ProductComponent> = new Map([
   [Furniture.name, FurnitureBox],
 ]);
 
-const showDeleteButton = computed(() => {
+const canDelete = computed(() => {
   return selectedProducts.value.length > 0;
 });
 
 async function deleteProducts() {
+  if (!canDelete) return;
   productsStore.deleteProducts(selectedProducts.value);
   selectedProducts.value.splice(0);
 }
@@ -58,19 +59,20 @@ function isProductSelected(product) {
 <template>
   <AppHeader title="Product List">
     <template #action>
-      <div class="header__content__buttons" v-if="showDeleteButton">
-        <button @click="selectedProducts.splice(0)" class="header__content__button header__content__button">
+      <div class="header__content__buttons">
+        <button v-if="canDelete" type="button" @click="selectedProducts.splice(0)" class="header__content__button header__content__button">
           DESELECT ALL
         </button>
 
-        <button @click="deleteProducts" class="header__content__button header__content__button--primary">
+        <button type="button" @click="deleteProducts" class="header__content__button header__content__button--primary">
           MASS DELETE
         </button>
+
+        <router-link :to="{'name': 'add'}" class="header__content__button header__content__button--primary">
+          ADD
+        </router-link>
       </div>
 
-      <router-link :to="{'name': 'add'}" class="header__content__button header__content__button--primary" v-else>
-        ADD
-      </router-link>
     </template>
   </AppHeader>
   <main>
