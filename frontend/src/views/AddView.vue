@@ -155,12 +155,12 @@ watch(
         id="sku"
         :errors="errors.get('sku')"
         :description="
-          submitted && checkingUniqueSKU ? 'Checking...' : 'Only charcters and numbers are allowed'
+          submitted && checkingUniqueSKU ? 'Checking...' : 'Only letter, numbers, and the character - are allowed'
         "
       >
         <input
           name="sku"
-          pattern="[a-zA-Z0-9]*"
+          pattern="[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*"
           :value="form.sku"
           v-debounce:400ms="(val) => (form.sku = val)"
           required
