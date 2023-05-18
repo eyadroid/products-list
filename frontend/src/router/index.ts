@@ -14,7 +14,7 @@ const router = createRouter({
       path: '/add',
       name: 'add',
       component: AddView
-    },
+    }
   ]
 })
 

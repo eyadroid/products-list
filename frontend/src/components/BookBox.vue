@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Book from "@/models/Book";
-import ProductBox from "./ProductBox.vue";
+import Book from '@/models/Book'
+import ProductBox from './ProductBox.vue'
 
 defineProps<{
-    product: Book,
+  product: Book
 }>()
 </script>
 

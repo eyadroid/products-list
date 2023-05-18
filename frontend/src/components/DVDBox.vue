@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import DVD from "@/models/DVD";
-import ProductBox from "./ProductBox.vue";
+import DVD from '@/models/DVD'
+import ProductBox from './ProductBox.vue'
 
 defineProps<{
-    product: DVD,
+  product: DVD
 }>()
 </script>
 
