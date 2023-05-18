@@ -105,6 +105,7 @@ async function checkUniqueSKU() {
       validate()
     }
   } catch (e) {
+    //
   } finally {
     checkingUniqueSKU.value = false
   }
@@ -150,11 +151,12 @@ watch(
   <main>
     <form class="form" @submit.prevent="submit" id="product_form">
       <FormField
-        description="Only charcters and numbers are allowed"
         label="SKU"
         id="sku"
         :errors="errors.get('sku')"
-        :description="submitted && checkingUniqueSKU ? 'Checking...' : null"
+        :description="
+          submitted && checkingUniqueSKU ? 'Checking...' : 'Only charcters and numbers are allowed'
+        "
       >
         <input
           name="sku"

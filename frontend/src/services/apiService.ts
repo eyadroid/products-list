@@ -26,19 +26,20 @@ class ApiService {
 
   // Transform axios response to APIResponse
   private parseResponse(respPromise: Promise<AxiosResponse>): Promise<APIResponse> {
-    return new Promise<APIResponse>(async (resolve) => {
-      try {
-        const resp = await respPromise
-        const adapter = new AxiosAdapter(resp)
-        resolve(adapter.toAPIResponse())
-      } catch (e: any) {
-        if (e.response) {
-          const adapter = new AxiosAdapter(e.response)
+    return new Promise<APIResponse>((resolve, reject) => {
+      respPromise
+        .then((resp) => {
+          const adapter = new AxiosAdapter(resp)
           resolve(adapter.toAPIResponse())
-        } else {
-          throw e
-        }
-      }
+        })
+        .catch((e: any) => {
+          if (e.response) {
+            const adapter = new AxiosAdapter(e.response)
+            resolve(adapter.toAPIResponse())
+          } else {
+            reject(e)
+          }
+        })
     })
   }
 }
