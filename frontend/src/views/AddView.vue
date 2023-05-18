@@ -155,7 +155,9 @@ watch(
         id="sku"
         :errors="errors.get('sku')"
         :description="
-          submitted && checkingUniqueSKU ? 'Checking...' : 'Only letter, numbers, and the character - are allowed'
+          submitted && checkingUniqueSKU
+            ? 'Checking...'
+            : 'Only letter, numbers, and the character - are allowed'
         "
       >
         <input
