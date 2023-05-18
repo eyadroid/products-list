@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use Rakit\Validation\Validator;
 use App\Entities\Product;
-use App\DB\EntityManager;
 use App\Services\ProductService;
 use App\Rules\UniqueRule;
 
@@ -20,6 +19,11 @@ class ProductController extends Controller
         $this->productService = new ProductService();
     }
 
+    /**
+     * Product index route
+     *
+     * @return array
+     */
     public function index()
     {
         $products = $this->productService->allProducts();
@@ -31,6 +35,11 @@ class ProductController extends Controller
         return $this->responseDataWithETag($products);
     }
 
+    /**
+     * Product show route.
+     *
+     * @return ?array
+     */
     public function show()
     {
         $validator = new Validator();
@@ -50,15 +59,18 @@ class ProductController extends Controller
 
         if (!$product) {
             http_response_code(404);
-            return [
-                "message" => "Product not found."
-            ];
+            return $this->responseMessage("Product not found.");
         }
 
         $response = $product->toArray();
         return $this->responseDataWithETag($response);
     }
 
+    /**
+     * Product store route.
+     *
+     * @return array
+     */
     public function store()
     {
         $_POST = json_decode(file_get_contents("php://input"), true);
@@ -85,26 +97,24 @@ class ProductController extends Controller
         if ($validation->fails()) {
             http_response_code(422);
             $errors = $validation->errors();
-            return [
-                "errors" => $errors->toArray()
-            ];
+            return $this->responseErrors($errors->toArray());
         }
 
         $product = $this->productService->createProduct();
 
         if (!$product) {
             http_response_code(500);
-            return [
-                "message" => "Server error"
-            ];
+            return $this->responseMessage("Product not found.");
         }
 
-        return [
-            "message" => "Product created succesfuly",
-            "data" => $product->toArray()
-        ];
+        return $this->responseDataWithMessage("Product created succesfuly", $product->toArray());
     }
 
+    /**
+     * Product delete route.
+     *
+     * @return array
+     */
     public function bulkDelete()
     {
         $_GET = json_decode(file_get_contents("php://input"), true);
@@ -121,15 +131,11 @@ class ProductController extends Controller
         if ($validation->fails()) {
             http_response_code(422);
             $errors = $validation->errors();
-            return [
-                "errors" => $errors->toArray()
-            ];
+            return $this->responseErrors($errors->toArray());
         }
 
         $this->productService->deleteProducts(...$_GET['ids']);
 
-        return [
-            "message" => "Products deleted successfully."
-        ];
+        return $this->responseMessage("Products deleted successfully.");
     }
 }
