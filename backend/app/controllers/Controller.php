@@ -8,9 +8,9 @@ class Controller
      * Return data cached with ETag.
      *
      * @param array $data
-     * @return array
+     * @return ?array
      */
-    protected function responseDataWithETag(array $data): array
+    protected function responseDataWithETag(array $data): ?array
     {
         // Get ETag from response json and insert it in header
         $etag = md5(json_encode($data));
@@ -19,7 +19,7 @@ class Controller
         // if client have most recent data
         if (!empty($_SERVER['HTTP_IF_NONE_MATCH']) && $etag == stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) {
             http_response_code(304);
-            return;
+            return null;
         }
 
         return $data;
