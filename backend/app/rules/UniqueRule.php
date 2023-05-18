@@ -11,11 +11,6 @@ class UniqueRule extends Rule
 
     protected $fillableParams = ['entity', 'column', 'except'];
 
-    public function __construct()
-    {
-        //
-    }
-
     public function check($value): bool
     {
         // make sure required parameters exists

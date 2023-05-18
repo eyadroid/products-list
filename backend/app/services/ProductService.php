@@ -13,9 +13,9 @@ class ProductService implements ProductServiceInterface
     /**
      * The entity manager.
      *
-     * @var EntityManager
+     * @var \Doctrine\ORM\EntityManager
      */
-    private EntityManager $em;
+    private \Doctrine\ORM\EntityManager $em;
 
     /**
      * A map of product type to it's corresponding class.
@@ -60,9 +60,9 @@ class ProductService implements ProductServiceInterface
      * Get a product from database.
      *
      * @param string $sku
-     * @return Product
+     * @return ?Product
      */
-    public function getProduct(string $sku): Product
+    public function getProduct(string $sku): ?Product
     {
         $product = $this->em->getRepository(Product::class)
             ->findOneBy(['sku' => $sku]);

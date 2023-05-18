@@ -17,9 +17,9 @@ interface ProductServiceInterface
      * Get a product.
      *
      * @param string $sku
-     * @return Product
+     * @return ?Product
      */
-    public function getProduct(string $sku): Product;
+    public function getProduct(string $sku): ?Product;
 
     /**
      * Get all products.

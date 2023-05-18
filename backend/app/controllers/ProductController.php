@@ -126,7 +126,7 @@ class ProductController extends Controller
             ];
         }
 
-        $this->productService->deleteProducts($_GET['ids']);
+        $this->productService->deleteProducts(...$_GET['ids']);
 
         return [
             "message" => "Products deleted successfully."
