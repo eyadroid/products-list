@@ -43,39 +43,74 @@ abstract class Product
         self::PRODUCT_TYPE_FURNITURE => "furniture",
     ];
 
-    public function getId()
+    /**
+     * Get product ID.
+     *
+     * @return integer
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName()
+    /**
+     * Get product name.
+     *
+     * @return string
+     */
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getPrice()
+    /**
+     * Get product price.
+     *
+     * @return integer
+     */
+    public function getPrice(): int
     {
         return $this->price;
     }
 
-    public function getSku()
+    /**
+     * Get product SKU.
+     *
+     * @return string
+     */
+    public function getSku(): string
     {
         return $this->sku;
     }
 
-    public function getType()
+    /**
+     * Get product type.
+     *
+     * @return string
+     */
+    public function getType(): string
     {
         return self::PRODUCT_TYPES[$this->productType];
     }
 
-    public function setBasicData($name, $price, $sku)
+    /**
+     * Set product name, price, and SKU.
+     *
+     * @return string
+     */
+    public function setBasicData(string $name, int $price, string $sku)
     {
         $this->name = $name;
         $this->price = $price;
         $this->sku = $sku;
     }
 
-    public function toArray()
+    /**
+     * Transform to array.
+     *
+     * @return array
+     */
+    public function toArray(): array
     {
         return [
             "id" => $this->getId(),

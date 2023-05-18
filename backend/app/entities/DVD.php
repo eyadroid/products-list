@@ -15,17 +15,33 @@ class DVD extends Product
     // on Init set data
     protected $productType = Product::PRODUCT_TYPE_DVD;
 
-    public function getSize()
+    /**
+     * Get product size in bytes.
+     *
+     * @return int
+     */
+    public function getSize(): int
     {
         return $this->size;
     }
 
-    public function setSize($size)
+    /**
+     * Set product size.
+     *
+     * @param int $size
+     * @return void
+     */
+    public function setSize(int $size)
     {
         $this->size = $size;
     }
 
-    public function toArray()
+    /**
+     * Transform to array.
+     *
+     * @return array
+     */
+    public function toArray(): array
     {
         return array_merge(
             parent::toArray(),

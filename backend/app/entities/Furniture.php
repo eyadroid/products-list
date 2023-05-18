@@ -25,29 +25,57 @@ class Furniture extends Product
 
     protected $productType = Product::PRODUCT_TYPE_FURNITURE;
 
-    public function setDimensions($heigth, $length, $width)
+    /**
+     * Set product height, length, and width.
+     *
+     * @param int $heigth
+     * @param int $length
+     * @param int $width
+     * @return void
+     */
+    public function setDimensions(int $heigth, int $length, int $width)
     {
         $this->heigth = $heigth;
         $this->length = $length;
         $this->width = $width;
     }
 
-    public function getHeigth()
+    /**
+     * Get product height in cm.
+     *
+     * @return int
+     */
+    public function getHeigth(): int
     {
         return $this->heigth;
     }
 
-    public function getLength()
+    /**
+     * Get product length in cm.
+     *
+     * @return int
+     */
+    public function getLength(): int
     {
         return $this->length;
     }
 
-    public function getWidth()
+    /**
+     * Get product width in cm.
+     *
+     * @return int
+     */
+    public function getWidth(): int
     {
         return $this->width;
     }
 
-    public function toArray()
+    /**
+     * Transform to array.
+     *
+     * @return array
+     */
+    public function toArray(): array
     {
         return array_merge(
             parent::toArray(),

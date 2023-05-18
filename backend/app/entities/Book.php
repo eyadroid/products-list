@@ -14,17 +14,33 @@ class Book extends Product
     protected $weight;
     protected $productType = Product::PRODUCT_TYPE_BOOK;
 
-    public function getWeight()
+    /**
+     * Get product weight in KG.
+     *
+     * @return int
+     */
+    public function getWeight(): int
     {
         return $this->weight;
     }
 
-    public function setWeight($weight)
+    /**
+     * Set product weight.
+     *
+     * @param integer $weight
+     * @return void
+     */
+    public function setWeight(int $weight)
     {
         $this->weight = $weight;
     }
 
-    public function toArray()
+    /**
+     * Transform to array.
+     *
+     * @return array
+     */
+    public function toArray(): array
     {
         return array_merge(
             parent::toArray(),
