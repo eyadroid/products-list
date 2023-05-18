@@ -8,7 +8,7 @@ use Utils\EntityManager;
 use Services\ProductService;
 use Rules\UniqueRule;
 
-class ProductController
+class ProductController extends Controller
 {
     /**
      * @var ProductService
@@ -28,7 +28,7 @@ class ProductController
             $products[$key] = $product->toArray();
         }
 
-        return $products;
+        return $this->responseDataWithETag($products);
     }
 
     public function show()
@@ -54,7 +54,8 @@ class ProductController
             ];
         }
 
-        return $product->toArray();
+        $response = $product->toArray();
+        return $this->responseDataWithETag($response);
     }
 
     public function store()
