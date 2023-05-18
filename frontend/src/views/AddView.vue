@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
 import { ref } from 'vue'
 import { computed, watch } from 'vue'
 import Validator from 'validatorjs'
@@ -11,6 +12,10 @@ import { ProductInputsComponent } from '@/types/ProductInputsComponent'
 import { productService, ProductInsertionError } from '@/services/productService'
 import router from '@/router'
 import { useProductsStore } from '@/stores/products'
+
+useHead({
+  title: 'Product Add'
+})
 
 const PRODUCT_TYPE_TO_INPUTS_COMPONENT: Map<string, ProductInputsComponent> = new Map([
   ['book', BookInputs],

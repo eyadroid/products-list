@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@unhead/vue": "^1.1.26",
     "axios": "^1.4.0",
     "axios-etag-cache": "^1.4.0",
     "pinia": "^2.0.36",

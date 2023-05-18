@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
 import { computed } from 'vue'
 import { ref, onMounted } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
@@ -11,6 +12,10 @@ import DVD from '@/models/DVD'
 import Furniture from '@/models/Furniture'
 import { useProductsStore } from '@/stores/products'
 import Product from '@/models/Product'
+
+useHead({
+  title: 'Product List'
+})
 
 const selectedProducts = ref([])
 
