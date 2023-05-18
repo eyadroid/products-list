@@ -8,10 +8,18 @@ use App\Entities\DVD;
 use App\Entities\Furniture;
 use App\DB\EntityManager;
 
-class ProductService
+class ProductService implements ProductServiceInterface
 {
-    private $em;
+    /**
+     * The entity manager.
+     *
+     * @var EntityManager
+     */
+    private EntityManager $em;
 
+    /**
+     * A map of product type to it's corresponding class.
+     */
     protected const TYPE_TO_CLASS = [
         'book' => Book::class,
         'dvd' => DVD::class,
@@ -23,7 +31,12 @@ class ProductService
         $this->em = EntityManager::getInstance();
     }
 
-    public function createProduct()
+    /**
+     * Insert a product into database.
+     *
+     * @return Product
+     */
+    public function createProduct(): Product
     {
         $type = $_POST['type'];
         $class = $this->getClassFromType($type);
@@ -37,27 +50,44 @@ class ProductService
             $this->em->flush();
             $this->em->getConnection()->commit();
             return $instance;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->em->getConnection()->rollback();
             return null;
         }
     }
 
-    public function getProduct($sku)
+    /**
+     * Get a product from database.
+     *
+     * @param string $sku
+     * @return Product
+     */
+    public function getProduct(string $sku): Product
     {
         $product = $this->em->getRepository(Product::class)
             ->findOneBy(['sku' => $sku]);
         return $product;
     }
 
-    public function allProducts()
+    /**
+     * Get all products from database.
+     *
+     * @return array
+     */
+    public function allProducts(): array
     {
         $products = $this->em->getRepository(Product::class)
             ->findBy([], ['id' => 'DESC']);
         return $products;
     }
 
-    public function deleteProducts($ids)
+    /**
+     * Delete products from database.
+     *
+     * @param integer ...$ids
+     * @return void
+     */
+    public function deleteProducts(int ...$ids)
     {
         $this->em->createQueryBuilder()
             ->delete(Product::class, 'p')
@@ -67,21 +97,39 @@ class ProductService
             ->execute();
     }
 
-    private function setBookExtraData($book)
+    /**
+     * Set a book weight from POST body.
+     *
+     * @param Book $book
+     * @return Book
+     */
+    private function setBookExtraData(Book $book): Book
     {
         $weight = $_POST['weight'];
         $book->setWeight($weight);
         return $book;
     }
 
-    private function setDVDExtraData($dvd)
+    /**
+     * Set a dvd size from POST body.
+     *
+     * @param DVD $dvd
+     * @return DVD
+     */
+    private function setDVDExtraData(DVD $dvd): DVD
     {
         $size = $_POST['size'];
         $dvd->setSize($size);
         return $dvd;
     }
 
-    private function setFurnitureExtraData($furniture)
+    /**
+     * Set a furniture height, length, and weight from POST body.
+     *
+     * @param Furniture $furniture
+     * @return Furniture
+     */
+    private function setFurnitureExtraData(Furniture $furniture): Furniture
     {
         $height = $_POST['height'];
         $length = $_POST['length'];
@@ -90,7 +138,13 @@ class ProductService
         return $furniture;
     }
 
-    private function createProductInstance($class)
+    /**
+     * Create a product with basic data.
+     *
+     * @param string $class
+     * @return Product
+     */
+    private function createProductInstance(string $class): Product
     {
         $instance = new $class();
         $name = $_POST['name'];
@@ -100,12 +154,24 @@ class ProductService
         return $instance;
     }
 
-    private function getClassFromType($type)
+    /**
+     * Get a product class from type.
+     *
+     * @param string $type
+     * @return string
+     */
+    private function getClassFromType(string $type): string
     {
         return self::TYPE_TO_CLASS[$type];
     }
 
-    private function getSetExtraDataMethodFromType($type)
+    /**
+     * Get the extra data method of a type.
+     *
+     * @param string $type
+     * @return void
+     */
+    private function getSetExtraDataMethodFromType(string $type)
     {
         return "set" . ucwords($type) . "ExtraData";
     }
