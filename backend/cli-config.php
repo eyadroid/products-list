@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
-use Utils\EntityManager;
+use App\Utils\EntityManager;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/');
 $dotenv->load();

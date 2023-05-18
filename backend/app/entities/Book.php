@@ -1,5 +1,5 @@
 <?php
-namespace Entities;
+namespace App\Entities;
 
 /**
  * @Entity

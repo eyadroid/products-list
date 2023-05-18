@@ -10,10 +10,10 @@ $router->setBasePath('/api');
 /**
  * Map the routes with controller methods here
  */
-$router->map('GET', '/products/get', '\Controllers\ProductController@show');
-$router->map('GET', '/products', '\Controllers\ProductController@index');
-$router->map('POST', '/products', '\Controllers\ProductController@store');
-$router->map('DELETE', '/products', '\Controllers\ProductController@bulkDelete');
+$router->map('GET', '/products/get', '\App\Controllers\ProductController@show');
+$router->map('GET', '/products', '\App\Controllers\ProductController@index');
+$router->map('POST', '/products', '\App\Controllers\ProductController@store');
+$router->map('DELETE', '/products', '\App\Controllers\ProductController@bulkDelete');
 /**
  * Match the route and return appropriate response
  */

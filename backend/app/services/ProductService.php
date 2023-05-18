@@ -1,12 +1,12 @@
 <?php
 
-namespace Services;
+namespace App\Services;
 
-use Entities\Product;
-use Entities\Book;
-use Entities\DVD;
-use Entities\Furniture;
-use Utils\EntityManager;
+use App\Entities\Product;
+use App\Entities\Book;
+use App\Entities\DVD;
+use App\Entities\Furniture;
+use App\Utils\EntityManager;
 
 class ProductService
 {

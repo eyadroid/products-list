@@ -1,9 +1,9 @@
 <?php
 
-namespace Rules;
+namespace App\Rules;
 
 use Rakit\Validation\Rule;
-use Utils\EntityManager;
+use App\Utils\EntityManager;
 
 class UniqueRule extends Rule
 {

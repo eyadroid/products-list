@@ -1,12 +1,12 @@
 <?php 
 
-namespace Controllers;
+namespace App\Controllers;
 
 use Rakit\Validation\Validator;
-use Entities\Product;
-use Utils\EntityManager;
-use Services\ProductService;
-use Rules\UniqueRule;
+use App\Entities\Product;
+use App\Utils\EntityManager;
+use App\Services\ProductService;
+use App\Rules\UniqueRule;
 
 class ProductController extends Controller
 {

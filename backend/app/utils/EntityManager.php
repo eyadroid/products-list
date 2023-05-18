@@ -1,6 +1,6 @@
 <?php
 
-namespace Utils;
+namespace App\Utils;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
