@@ -1,0 +1,84 @@
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Lint Frontend
+          image: node:16.6.2
+          caches:
+            - node
+          script:
+            - cd frontend
+            - npm install
+            - npm run lint
+
+      # Install composer and unzip extension and then
+      # running the lint script.
+      - step:
+          image: php:7.4
+          name: Lint Backend
+          script:
+            - curl -sS https://getcomposer.org/installer | php
+            - mv composer.phar /usr/local/bin/composer
+            - apt-get update && apt-get install -y unzip
+            - cd backend
+            - composer install
+            - composer run-script lint
+          caches:
+            - composer
+            - unzip
+
+      # Copying backend folder to server
+      - step:
+          name: Deploy Backend  
+          script:
+            - pipe: atlassian/scp-deploy:1.2.1
+              variables:
+                USER: $SSH_USER
+                SERVER: $HOST
+                REMOTE_PATH: '/var/repos/scandiweb-test'
+                LOCAL_PATH: 'backend/*'
+                DEBUG: 'true'
+
+      # Uncomment this if you want to auto install dependencies and migrate database.
+      # CAUTION: This step takes a lot of time which might consume your pipeline minutes quota.
+      # Updating composer packages and DB.
+      # - step:
+      #     name: Setup Backend 
+      #     script:
+      #       - pipe: atlassian/ssh-run:0.4.2
+      #         variables:
+      #           SSH_USER: $SSH_USER
+      #           SERVER: $HOST 
+      #           COMMAND: 'cd /var/repos/scandiweb-test/backend && php7.4 /usr/bin/composer7.4 update && php7.4 vendor/bin/doctrine orm:schema-tool:update --force'
+
+      # 
+      - step:
+          name: Build Frontend
+          deployment: production
+          image: node:16.6.2
+          caches:
+            - node
+          script:
+            - cd frontend
+            # Getting .env content from base64 variable.
+            - echo $FRONT_ENV | base64 -d > .env
+            - npm install
+            - npm run build-only
+          artifacts: # defining the artifacts to be passed to each future step.
+            - frontend/dist/**
+
+      # Copying built folder to server
+      - step:
+          name: Deploy Frontend build files
+          script:
+            - pipe: atlassian/scp-deploy:1.2.1
+              variables:
+                USER: $SSH_USER
+                SERVER: $HOST
+                REMOTE_PATH: '/var/www/scandiweb'
+                LOCAL_PATH: 'frontend/dist/*'
+                DEBUG: 'true'
+
+definitions:
+  caches:
+    unzip: /usr/bin/unzip
