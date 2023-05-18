@@ -13,11 +13,11 @@ class EntityManager
     protected static $instance;
 
     /**
-     * Creates instance and returns it on subsequent calls
+     * Creates DoctrineEntityManager and returns
      *
-     * @returns instance
+     * @return DoctrineEntityManager
      */
-    public static function getInstance()
+    public static function getInstance(): DoctrineEntityManager
     {
         if (self::$instance === null) {
             $isDevMode = $_ENV['APP_ENV'] === 'local';
@@ -63,7 +63,7 @@ class EntityManager
     }
 
     /**
-     * Delegate every method call to PDO instance
+     * Delegate every method call to DoctrineEntityManager instance
      *
      * @param  String $method
      * @param  Array  $args

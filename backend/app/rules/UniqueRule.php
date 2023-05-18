@@ -7,10 +7,26 @@ use App\DB\EntityManager;
 
 class UniqueRule extends Rule
 {
+    /**
+     * Validation fail message.
+     *
+     * @var string
+     */
     protected $message = ":attribute :value has been used";
 
+    /**
+     * Rule parameters.
+     *
+     * @var array
+     */
     protected $fillableParams = ['entity', 'column', 'except'];
 
+    /**
+     * Check if value is unique.
+     *
+     * @param $value
+     * @return boolean
+     */
     public function check($value): bool
     {
         // make sure required parameters exists
