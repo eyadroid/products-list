@@ -39,11 +39,16 @@ class ProductService implements ProductServiceInterface
     public function createProduct(): Product
     {
         $type = $_POST['type'];
+        // get the product type class and create an instance
+        // with basic data
         $class = $this->getClassFromType($type);
         $instance = $this->createProductInstance($class);
+
+        // get the product set additional method and call it
         $extraDataMethod = $this->getSetExtraDataMethodFromType($type);
         $instance = $this->$extraDataMethod($instance);
 
+        // Saving product to database
         $this->em->getConnection()->beginTransaction(); // suspend auto-commit
         try {
             $this->em->persist($instance);
