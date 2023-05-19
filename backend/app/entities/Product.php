@@ -96,7 +96,7 @@ abstract class Product
     /**
      * Set product name, price, and SKU.
      *
-     * @return string
+     * @return void
      */
     public function setBasicData(string $name, int $price, string $sku)
     {
@@ -118,10 +118,6 @@ abstract class Product
             "sku" => $this->getSku(),
             "price" => $this->getPrice(),
             "type" => $this->getType(),
-            "weight" => null,
-            "length" => null,
-            "width" => null,
-            "height" => null,
         ];
     }
 }
