@@ -7,11 +7,30 @@ use App\Entities\Product;
 interface ProductServiceInterface
 {
     /**
-     * Create a product from POST body.
+     * Create a product.
      *
+     * @param string $name
+     * @param integer $price
+     * @param string $sku
+     * @param string $type
+     * @param integer|null $weight
+     * @param integer|null $size
+     * @param integer|null $heigth
+     * @param integer|null $length
+     * @param integer|null $width
      * @return Product
      */
-    public function createProduct(): Product;
+    public function createProduct(
+        string $name,
+        int $price,
+        string $sku,
+        string $type,
+        ?int $weight,
+        ?int $size,
+        ?int $heigth,
+        ?int $length,
+        ?int $width
+    ): ?Product;
 
     /**
      * Get a product.

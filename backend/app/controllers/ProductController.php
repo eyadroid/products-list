@@ -100,7 +100,27 @@ class ProductController extends Controller
             return $this->responseErrors($errors->toArray());
         }
 
-        $product = $this->productService->createProduct();
+        $name = $_POST['name'];
+        $price = $_POST['price'];
+        $sku = $_POST['sku'];
+        $type = $_POST['type'];
+        $weight = $_POST['weight'] ?? null;
+        $size = $_POST['size'] ?? null;
+        $height = $_POST['height'] ?? null;
+        $length = $_POST['length'] ?? null;
+        $width = $_POST['width'] ?? null;
+
+        $product = $this->productService->createProduct(
+            $name,
+            $price,
+            $sku,
+            $type,
+            $weight,
+            $size,
+            $height,
+            $length,
+            $width
+        );
 
         if (!$product) {
             http_response_code(500);

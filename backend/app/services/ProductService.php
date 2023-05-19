@@ -31,22 +31,45 @@ class ProductService implements ProductServiceInterface
         $this->em = EntityManager::getInstance();
     }
 
-    /**
-     * Insert a product into database.
+        /**
+     * Create a product.
      *
+     * @param string $name
+     * @param integer $price
+     * @param string $sku
+     * @param string $type
+     * @param integer|null $weight
+     * @param integer|null $size
+     * @param integer|null $heigth
+     * @param integer|null $length
+     * @param integer|null $width
      * @return Product
      */
-    public function createProduct(): Product
-    {
-        $type = $_POST['type'];
+    public function createProduct(
+        string $name,
+        int $price,
+        string $sku,
+        string $type,
+        ?int $weight,
+        ?int $size,
+        ?int $heigth,
+        ?int $length,
+        ?int $width
+    ): ?Product {
         // get the product type class and create an instance
         // with basic data
         $class = $this->getClassFromType($type);
-        $instance = $this->createProductInstance($class);
+        $instance = $this->createProductInstance($class, $name, $price, $sku);
 
         // get the product set additional method and call it
         $extraDataMethod = $this->getSetExtraDataMethodFromType($type);
-        $instance = $this->$extraDataMethod($instance);
+        $instance = $this->$extraDataMethod($instance, [
+            'weight' => $weight,
+            'size' => $size,
+            'height' => $heigth,
+            'length' => $length,
+            'width' => $width,
+        ]);
 
         // Saving product to database
         $this->em->getConnection()->beginTransaction(); // suspend auto-commit
@@ -106,11 +129,12 @@ class ProductService implements ProductServiceInterface
      * Set a book weight from POST body.
      *
      * @param Book $book
+     * @param array $data
      * @return Book
      */
-    private function setBookExtraData(Book $book): Book
+    private function setBookExtraData(Book $book, array $data): Book
     {
-        $weight = $_POST['weight'];
+        $weight = $data['weight'];
         $book->setWeight($weight);
         return $book;
     }
@@ -119,11 +143,12 @@ class ProductService implements ProductServiceInterface
      * Set a dvd size from POST body.
      *
      * @param DVD $dvd
+     * @param array $data
      * @return DVD
      */
-    private function setDVDExtraData(DVD $dvd): DVD
+    private function setDVDExtraData(DVD $dvd, array $data): DVD
     {
-        $size = $_POST['size'];
+        $size = $data['size'];
         $dvd->setSize($size);
         return $dvd;
     }
@@ -132,13 +157,14 @@ class ProductService implements ProductServiceInterface
      * Set a furniture height, length, and weight from POST body.
      *
      * @param Furniture $furniture
+     * @param array $data
      * @return Furniture
      */
-    private function setFurnitureExtraData(Furniture $furniture): Furniture
+    private function setFurnitureExtraData(Furniture $furniture, array $data): Furniture
     {
-        $height = $_POST['height'];
-        $length = $_POST['length'];
-        $width = $_POST['width'];
+        $height = $data['height'];
+        $length = $data['length'];
+        $width = $data['width'];
         $furniture->setDimensions($height, $length, $width);
         return $furniture;
     }
@@ -147,14 +173,14 @@ class ProductService implements ProductServiceInterface
      * Create a product with basic data.
      *
      * @param string $class
+     * @param string $name
+     * @param integer $price
+     * @param string $sku
      * @return Product
      */
-    private function createProductInstance(string $class): Product
+    private function createProductInstance(string $class, string $name, int $price, string $sku): Product
     {
         $instance = new $class();
-        $name = $_POST['name'];
-        $price = $_POST['price'];
-        $sku = $_POST['sku'];
         $instance->setBasicData($name, $price, $sku);
         return $instance;
     }
@@ -174,9 +200,9 @@ class ProductService implements ProductServiceInterface
      * Get the extra data method of a type.
      *
      * @param string $type
-     * @return void
+     * @return string
      */
-    private function getSetExtraDataMethodFromType(string $type)
+    private function getSetExtraDataMethodFromType(string $type): string
     {
         return "set" . ucwords($type) . "ExtraData";
     }
