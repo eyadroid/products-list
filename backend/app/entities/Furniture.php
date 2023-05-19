@@ -11,7 +11,7 @@ class Furniture extends Product
      * @Column(type="decimal", precision=8, scale=2, nullable=true)
      * @var                    int
      */
-    protected $heigth;
+    protected $height;
     /**
      * @Column(type="decimal", precision=8, scale=2, nullable=true)
      * @var                    int
@@ -28,14 +28,14 @@ class Furniture extends Product
     /**
      * Set product height, length, and width.
      *
-     * @param int $heigth
+     * @param int $height
      * @param int $length
      * @param int $width
      * @return void
      */
-    public function setDimensions(int $heigth, int $length, int $width)
+    public function setDimensions(int $height, int $length, int $width)
     {
-        $this->heigth = $heigth;
+        $this->height = $height;
         $this->length = $length;
         $this->width = $width;
     }
@@ -45,9 +45,9 @@ class Furniture extends Product
      *
      * @return int
      */
-    public function getHeigth(): int
+    public function getHeight(): int
     {
-        return $this->heigth;
+        return $this->height;
     }
 
     /**
@@ -80,7 +80,7 @@ class Furniture extends Product
         return array_merge(
             parent::toArray(),
             [
-            "heigth" => $this->getHeigth(),
+            "height" => $this->getHeight(),
             "length" => $this->getLength(),
             "width" => $this->getWidth(),
             ]

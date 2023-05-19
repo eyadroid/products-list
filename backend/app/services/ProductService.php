@@ -40,7 +40,7 @@ class ProductService implements ProductServiceInterface
      * @param string $type
      * @param integer|null $weight
      * @param integer|null $size
-     * @param integer|null $heigth
+     * @param integer|null $height
      * @param integer|null $length
      * @param integer|null $width
      * @return Product
@@ -52,7 +52,7 @@ class ProductService implements ProductServiceInterface
         string $type,
         ?int $weight,
         ?int $size,
-        ?int $heigth,
+        ?int $height,
         ?int $length,
         ?int $width
     ): ?Product {
@@ -66,7 +66,7 @@ class ProductService implements ProductServiceInterface
         $instance = $this->$extraDataMethod($instance, [
             'weight' => $weight,
             'size' => $size,
-            'height' => $heigth,
+            'height' => $height,
             'length' => $length,
             'width' => $width,
         ]);

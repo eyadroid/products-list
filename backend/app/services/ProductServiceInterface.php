@@ -15,7 +15,7 @@ interface ProductServiceInterface
      * @param string $type
      * @param integer|null $weight
      * @param integer|null $size
-     * @param integer|null $heigth
+     * @param integer|null $height
      * @param integer|null $length
      * @param integer|null $width
      * @return Product
@@ -27,7 +27,7 @@ interface ProductServiceInterface
         string $type,
         ?int $weight,
         ?int $size,
-        ?int $heigth,
+        ?int $height,
         ?int $length,
         ?int $width
     ): ?Product;

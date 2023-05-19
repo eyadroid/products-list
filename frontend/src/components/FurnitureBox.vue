@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const dimensions = computed(() => {
-  return `${props.product.heigth}x${props.product.width}x${props.product.length}`
+  return `${props.product.height}x${props.product.width}x${props.product.length}`
 })
 </script>
 
