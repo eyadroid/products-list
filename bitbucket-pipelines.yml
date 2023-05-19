@@ -63,7 +63,7 @@ pipelines:
             # Getting .env content from base64 variable.
             - echo $FRONT_ENV | base64 -d > .env
             - npm install
-            - npm run build-only
+            - npm run build
           artifacts: # defining the artifacts to be passed to each future step.
             - frontend/dist/**
 
