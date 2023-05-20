@@ -3,10 +3,10 @@
 namespace App\Services;
 
 use App\Entities\Product;
-use App\Entities\Book;
-use App\Entities\DVD;
-use App\Entities\Furniture;
 use App\DB\EntityManager;
+use App\Factories\BookFactory;
+use App\Factories\DVDFactory;
+use App\Factories\FurnitureFactory;
 
 class ProductService implements ProductServiceInterface
 {
@@ -18,12 +18,12 @@ class ProductService implements ProductServiceInterface
     private \Doctrine\ORM\EntityManager $em;
 
     /**
-     * A map of product type to it's corresponding class.
+     * A map of product type to it's corresponding factory.
      */
-    protected const TYPE_TO_CLASS = [
-        'book' => Book::class,
-        'dvd' => DVD::class,
-        'furniture' => Furniture::class,
+    protected const TYPE_TO_FACTORY = [
+        'book' => BookFactory::class,
+        'dvd' => DVDFactory::class,
+        'furniture' => FurnitureFactory::class,
     ];
 
     public function __construct()
@@ -56,31 +56,34 @@ class ProductService implements ProductServiceInterface
         ?int $length,
         ?int $width
     ): ?Product {
-        // get the product type class and create an instance
-        // with basic data
-        $class = $this->getClassFromType($type);
-        $instance = $this->createProductInstance($class, $name, $price, $sku);
-
-        // get the product set additional method and call it
-        $extraDataMethod = $this->getSetExtraDataMethodFromType($type);
-        $instance = $this->$extraDataMethod($instance, [
-            'weight' => $weight,
-            'size' => $size,
-            'height' => $height,
-            'length' => $length,
-            'width' => $width,
-        ]);
-
-        // Saving product to database
-        $this->em->getConnection()->beginTransaction(); // suspend auto-commit
-        try {
-            $this->em->persist($instance);
-            $this->em->flush();
-            $this->em->getConnection()->commit();
-            return $instance;
-        } catch (\Exception $e) {
-            $this->em->getConnection()->rollback();
-            return null;
+        // create product factory based on type
+        $factoryClass = $this->getFactoryFromType($type);
+        $factory = new $factoryClass();
+        if ($factory instanceof BookFactory || $factory instanceof DVDFactory || $factory instanceof FurnitureFactory) {
+            $instance = $factory->create(
+                $name,
+                $price,
+                $sku,
+                $type,
+                [
+                    'weight' => $weight,
+                    'size' => $size,
+                    'height' => $height,
+                    'length' => $length,
+                    'width' => $width,
+                ]
+            );
+            // Saving product to database
+            $this->em->getConnection()->beginTransaction(); // suspend auto-commit
+            try {
+                $this->em->persist($instance);
+                $this->em->flush();
+                $this->em->getConnection()->commit();
+                return $instance;
+            } catch (\Exception $e) {
+                $this->em->getConnection()->rollback();
+                return null;
+            }
         }
     }
 
@@ -126,84 +129,13 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
-     * Set a book weight from POST body.
-     *
-     * @param Book $book
-     * @param array $data
-     * @return Book
-     */
-    private function setBookExtraData(Book $book, array $data): Book
-    {
-        $weight = $data['weight'];
-        $book->setWeight($weight);
-        return $book;
-    }
-
-    /**
-     * Set a dvd size from POST body.
-     *
-     * @param DVD $dvd
-     * @param array $data
-     * @return DVD
-     */
-    private function setDVDExtraData(DVD $dvd, array $data): DVD
-    {
-        $size = $data['size'];
-        $dvd->setSize($size);
-        return $dvd;
-    }
-
-    /**
-     * Set a furniture height, length, and weight from POST body.
-     *
-     * @param Furniture $furniture
-     * @param array $data
-     * @return Furniture
-     */
-    private function setFurnitureExtraData(Furniture $furniture, array $data): Furniture
-    {
-        $height = $data['height'];
-        $length = $data['length'];
-        $width = $data['width'];
-        $furniture->setDimensions($height, $length, $width);
-        return $furniture;
-    }
-
-    /**
-     * Create a product with basic data.
-     *
-     * @param string $class
-     * @param string $name
-     * @param integer $price
-     * @param string $sku
-     * @return Product
-     */
-    private function createProductInstance(string $class, string $name, int $price, string $sku): Product
-    {
-        $instance = new $class();
-        $instance->setBasicData($name, $price, $sku);
-        return $instance;
-    }
-
-    /**
-     * Get a product class from type.
+     * Get a product factory from type.
      *
      * @param string $type
      * @return string
      */
-    private function getClassFromType(string $type): string
+    private function getFactoryFromType(string $type): string
     {
-        return self::TYPE_TO_CLASS[$type];
-    }
-
-    /**
-     * Get the extra data method of a type.
-     *
-     * @param string $type
-     * @return string
-     */
-    private function getSetExtraDataMethodFromType(string $type): string
-    {
-        return "set" . ucwords($type) . "ExtraData";
+        return self::TYPE_TO_FACTORY[$type];
     }
 }
