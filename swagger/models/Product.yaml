@@ -1,0 +1,34 @@
+type: object
+
+properties:
+  id:
+    title: ID
+    description: ID
+    type: integer
+    format: int64
+    example: 1
+  name:
+    title: Name
+    description: Name
+    type: string
+    example: Test
+  sku:
+    title: SKU
+    description: SKU
+    type: string
+    example: TestProduct001
+  price:
+    title: Price
+    description: Price
+    type: integer
+    format: int64
+    example: 200
+  type:
+    title: Type
+    description: Type
+    type: string
+    example: book
+    enum:
+    - book
+    - dvd
+    - furniture

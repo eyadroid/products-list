@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  title: "Products Webapp"
+  description: ""
+  version: 1.0.0
+
+paths:
+  /api/products:
+    $ref: './paths/products/index.yaml'
+  /api/products/get:
+    $ref: './paths/products/get.yaml'
+
+servers:
+  - url: http://localhost:3300
+  - url: https://scandwieb.eyadroid.com
+
+components:
+  schemas:
+    Product:
+      $ref: "./models/Product.yaml"

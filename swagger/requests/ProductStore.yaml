@@ -1,0 +1,10 @@
+type: object
+allOf:
+  - $ref: "../models/Book.yaml"
+  - $ref: "../models/DVD.yaml"
+  - $ref: "../models/Furniture.yaml"
+required:
+  - name
+  - sku
+  - price
+  - type

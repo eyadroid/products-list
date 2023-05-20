@@ -1,0 +1,6 @@
+type: array
+items:
+  anyOf:
+    - $ref: '../models/Book.yaml'
+    - $ref: '../models/DVD.yaml'
+    - $ref: '../models/Furniture.yaml'

@@ -1,0 +1,25 @@
+get:
+  summary: Get a product.
+  description: ""
+  tags: 
+    - "Products"
+  deprecated: false
+  parameters:
+    - in: query
+      name: sku
+      schema:
+        type: string
+
+  responses:
+    "404":
+      description: NOT FOUND
+      content:
+        application/json:
+          example: 
+            message: "Product not found."
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../../models/Book.yaml"

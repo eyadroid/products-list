@@ -1,0 +1,79 @@
+get:
+  summary: Display all products.
+  description: ""
+  tags: 
+    - "Products"
+  deprecated: false
+
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../../responses/ProductsListResponse.yaml"
+
+delete:
+  summary: Delete products.
+  description: ""
+  tags: 
+    - "Products"
+  deprecated: false
+  requestBody:
+    content:
+      application/json:
+        schema:
+          properties:
+            ids:
+              type: array
+              example:
+                - 26
+                - 31
+
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Products deleted successfully.
+
+post:
+  summary: Store a newly created resource in storage.
+  description: ""
+  tags:
+    - "Products"
+  deprecated: false
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../requests/ProductStore.yaml"
+    description: Product data
+    required: true
+  responses:
+    "422":
+      description: Validation error
+      content:
+        application/json:
+            example:
+              errors:
+                sku:
+                  regex: SKU format is invalid.
+
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: object
+                example: "Product created successfully"
+              data:
+                $ref: "../../models/Product.yaml"

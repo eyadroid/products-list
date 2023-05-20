@@ -1,0 +1,24 @@
+type: object
+
+allOf:
+  - $ref: "./Product.yaml"
+
+properties:
+    length:
+      title: Length
+      description: Length
+      type: integer
+      format: int64
+      example: 3.2
+    height:
+      title: Height
+      description: Height
+      type: integer
+      format: int64
+      example: 1.2
+    width:
+      title: Width
+      description: Width
+      type: integer
+      format: int64
+      example: 7
