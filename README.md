@@ -2,9 +2,9 @@
 A basic project list and add web app.
 
 ## Table of contents
-- ### [Features](#features)
-- ### [Installation](#installation)
-- ### [CI/CD Pipelines](#pipelines)
+- ### [Features](#markdown-header-features_1)
+- ### [Installation](#markdown-header-installation_1)
+- ### [CI/CD Pipelines](#markdown-header-pipelines)
 
 ## Features
 &nbsp;&nbsp;&nbsp;&nbsp;`✔️` Linting according to modern standards.
@@ -19,6 +19,7 @@ A basic project list and add web app.
 
 ## Pipelines
 Using [Bitbucket pipelines](https://bitbucket.org/product/features/pipelines), the CI/CD steps are:
-- Auto linting the backend and frontend code. The pipeline will stop will fail if the code does not comply with the standard.
-- Auto deploy the code to a Linux server.
-- Auto migrate DB changes.
+
+* Auto linting the backend and frontend code. The pipeline will stop will fail if the code does not comply with the standard.
+* Auto deploy the code to a Linux server.
+* Auto migrate DB changes.
