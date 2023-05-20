@@ -1,17 +1,7 @@
-import Book from '@/models/Book'
-import DVD from '@/models/DVD'
-import Furniture from '@/models/Furniture'
+import { productFactory } from '@/factories/productFactory'
 import Product from '@/models/Product'
 import { APIValidationError } from '@/types/APIResponse'
-import ProductConstructor from '@/types/ProductConstructor'
 import { apiService } from './apiService'
-
-// Map to transform product type to it's corresponding constructor
-export const typeToClassMap = new Map<String, ProductConstructor>([
-  ['book', Book],
-  ['dvd', DVD],
-  ['furniture', Furniture]
-])
 
 export class ProductInsertionError extends Error {
   constructor(msg: string, public errors: APIValidationError[]) {
@@ -26,7 +16,7 @@ class ProductService {
     const resp = await apiService.get('/products')
     const json = resp.data as Array<any>
     // map json data to a product class by it's type
-    return json.map<Product>((j) => new (this.constructorFromType(j.type))(j))
+    return json.map<Product>((j) => productFactory.create(j))
   }
 
   async getProduct(sku: string): Promise<Product | null> {
@@ -37,7 +27,7 @@ class ProductService {
       return null
     }
     const json = resp.data
-    return new (this.constructorFromType(json.type))(json)
+    return productFactory.create(json)
   }
 
   async insertProduct(
@@ -80,10 +70,6 @@ class ProductService {
       new Error(resp.message ?? 'Error occured')
     }
     return true
-  }
-
-  constructorFromType(type: string): ProductConstructor {
-    return typeToClassMap.get(type)!
   }
 }
 

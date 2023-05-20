@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { productService } from '@/services/productService'
+import { productFactory } from '@/factories/productFactory'
 
 export const useProductsStore = defineStore('products', () => {
   const products = ref([])
@@ -20,7 +21,7 @@ export const useProductsStore = defineStore('products', () => {
       productService
         .insertProduct(name, price, sku, type, weight, size, width, height, length)
         .then((product) => {
-          const newProduct = new (productService.constructorFromType(product.type))(product)
+          const newProduct = productFactory.create(product)
           // if the product list is not empty insert the product
           // to it's start
           if (products.value.length > 0) {
