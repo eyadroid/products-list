@@ -17,9 +17,9 @@ const router = createRouter({
       component: AddView
     },
     {
-      path: "/:catchAll(.*)",
-      component: Notfound,
-    },
+      path: '/:catchAll(.*)',
+      component: Notfound
+    }
   ]
 })
 

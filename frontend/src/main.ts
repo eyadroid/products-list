@@ -4,7 +4,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import VueAxios from 'vue-axios'
 import { vue3Debounce } from 'vue-debounce'
-import { createHead } from "@unhead/vue"
+import { createHead } from '@unhead/vue'
 import axios from './axiosInstance'
 
 import App from './App.vue'
