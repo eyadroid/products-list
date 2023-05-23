@@ -1,5 +1,5 @@
 # Product list project
-A basic project list and add web app.
+A basic product list web app.
 
 ## Table of contents
 - ### [Features](#markdown-header-features_1)
