@@ -127,7 +127,7 @@ class ProductController extends Controller
             return $this->responseMessage("Product not found.");
         }
 
-        return $this->responseDataWithMessage("Product created succesfuly", $product->toArray());
+        return $this->responseDataWithMessage("Product created successfully", $product->toArray());
     }
 
     /**
@@ -141,7 +141,7 @@ class ProductController extends Controller
 
         $validator = new Validator();
         $validation = $validator->make(
-            $_GET,
+            $_GET ?? [],
             [
             'ids' => 'array',
             'ids.*' => 'required|numeric',
