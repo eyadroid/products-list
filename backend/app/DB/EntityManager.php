@@ -21,7 +21,7 @@ class EntityManager
     {
         if (self::$instance === null) {
             $isDevMode = $_ENV['APP_ENV'] === 'local';
-            $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "/../entities"), $isDevMode);
+            $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__ . "/../Entities"), $isDevMode);
 
             // database configuration parameters
             if ($_ENV['DATABASE_DRIVER'] == 'sqlite') {
