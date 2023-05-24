@@ -18,6 +18,8 @@ A basic product list web app.
 
 &nbsp;&nbsp;&nbsp;&nbsp;`✔️` API documentation.
 
+&nbsp;&nbsp;&nbsp;&nbsp;`✔️` PWA.
+
 ## Installation
 ### [Frontend](./frontend/README.md)
 ### [Backend](./backend/README.md)
