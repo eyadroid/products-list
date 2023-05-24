@@ -35,7 +35,7 @@ pipelines:
               variables:
                 USER: $SSH_USER
                 SERVER: $HOST
-                REMOTE_PATH: '/var/repos/scandiweb-test'
+                REMOTE_PATH: '/var/repos/scandiweb-test/backend'
                 LOCAL_PATH: 'backend/*'
                 DEBUG: 'true'
 
