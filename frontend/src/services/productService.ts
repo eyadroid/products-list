@@ -54,7 +54,7 @@ class ProductService {
     })
 
     if (resp.success == false) {
-      const error = new ProductInsertionError(resp.message ?? 'Error occured', resp.errors ?? [])
+      const error = new ProductInsertionError(resp.message ?? 'Error occurred', resp.errors ?? [])
       throw error
     }
 
@@ -67,7 +67,7 @@ class ProductService {
     })
 
     if (!resp.success) {
-      new Error(resp.message ?? 'Error occured')
+      new Error(resp.message ?? 'Error occurred')
     }
     return true
   }
