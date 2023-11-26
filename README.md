@@ -31,4 +31,4 @@ Using [Bitbucket pipelines](https://bitbucket.org/product/features/pipelines), t
 * Auto deploy the code to a Linux server.
 * Auto migrate DB changes.
 
-## [Documentation](https://scandiweb.eyadroid.com/swagger)
+## [Documentation](https://productslist.eyadroid.com/swagger)
