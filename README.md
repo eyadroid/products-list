@@ -1,7 +1,7 @@
 # Product list project
 A basic product list web app.
 
-## [Demo](https://scandiweb.eyadroid.com)
+## [Demo](https://productslist.eyadroid.com)
 
 ## Table of contents
 - ### [Features](#markdown-header-features_1)
